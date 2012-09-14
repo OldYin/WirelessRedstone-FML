@@ -42,12 +42,9 @@ public abstract class EurysPacket {
 	public String toString() {
 		return getID() + " " + getClass().getSimpleName();
 	}
+	
+	public Packet250CustomPayload getPacket250() {
 
-	/**
-	 * Retrieves the Custom Packet and Payload data as a Forge
-	 * Packet250CustomPayload
-	 */
-	public Packet getPacket() {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		DataOutputStream data = new DataOutputStream(bytes);
 		try {
@@ -62,5 +59,13 @@ public abstract class EurysPacket {
 		packet.length = packet.data.length;
 		packet.isChunkDataPacket = this.isChunkDataPacket;
 		return packet;
+	}
+
+	/**
+	 * Retrieves the Custom Packet and Payload data as a Forge
+	 * Packet250CustomPayload
+	 */
+	public Packet getPacket() {
+		return getPacket250();
 	}
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModLoader;
+import net.minecraft.src.NetClientHandler;
+import net.minecraft.src.NetHandler;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -195,5 +197,13 @@ public class WRClientProxy extends WRCommonProxy {
 	@Override
 	public EntityPlayer getPlayer() {
 		return ModLoader.getMinecraftInstance().thePlayer;
+	}
+
+	@Override
+	public World getWorld(NetHandler handler) {
+		if (handler instanceof NetClientHandler) {
+			return ((NetClientHandler)handler).getPlayer().worldObj;
+		}
+		return null;
 	}
 }

@@ -63,7 +63,7 @@ public class ClientRedstoneEtherPacketHandler implements IPacketHandler {
 		
 		// Execute the command.
 		if ( executors.containsKey(command)) {
-			executors.get(command).execute(packet, world);
+			executors.get(command).execute(packet, world, entityplayer);
 		} else {
 			LoggerRedstoneWireless
 					.getInstance("ClientRedstoneEtherPacketHandler")
@@ -74,10 +74,8 @@ public class ClientRedstoneEtherPacketHandler implements IPacketHandler {
 	}
 
 	public static void sendRedstoneEtherPacket(int command, int i, int j, int k, Object freq, boolean state) {
-		PacketRedstoneEther packet = new PacketRedstoneEther(command);
+		PacketRedstoneEther packet = new PacketRedstoneEther(command, freq, state);
 		packet.setPosition(i, j, k, 0);
-		packet.setFreq(freq);
-		packet.setState(state);
 		LoggerRedstoneWireless.getInstance("PacketHandlerOutput").write(
 				"sendRedstoneEtherPacket:" + packet.toString(),
 				LoggerRedstoneWireless.LogLevel.DEBUG

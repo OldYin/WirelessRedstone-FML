@@ -22,8 +22,14 @@ public class PacketRedstoneEther extends PacketWireless {
 	}
 
 	public PacketRedstoneEther(int command) {
-		super(PacketIds.ETHER, new PacketPayload(0, 0, 1, 1));
+		this();
 		setCommand(command);
+	}
+
+	public PacketRedstoneEther(int command, Object freq, boolean state) {
+		super(PacketIds.ETHER, new PacketPayload(0, 0, 1, 1));
+		this.setFreq(freq);
+		this.setState(state);
 	}
 
 	public PacketRedstoneEther(TileEntityRedstoneWireless entity, World world) {

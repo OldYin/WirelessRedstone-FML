@@ -12,6 +12,7 @@
 package wirelessredstone.api;
 
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.NetHandler;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -86,4 +87,6 @@ public interface ICommonProxy extends IGuiHandler {
 	 * Called on initialization.
 	 */
 	public void init();
+
+	public World getWorld(NetHandler handler);
 }
