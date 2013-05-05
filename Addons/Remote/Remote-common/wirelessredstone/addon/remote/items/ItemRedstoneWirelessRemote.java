@@ -90,7 +90,8 @@ public class ItemRedstoneWirelessRemote extends Item {
 			EntityPlayer entityplayer) {
 		if (!entityplayer.isSneaking()) {
 			entityplayer.setItemInUse(itemstack, 72000);
-			WRemoteCore.proxy.activateRemote(world, entityplayer);
+			System.out.println(this.getFreq(itemstack, world));
+			//WRemoteCore.proxy.activateRemote(world, entityplayer);
 		} else {
 			onItemUseFirst(itemstack, entityplayer, world,
 					(int) Math.round(entityplayer.posX),
