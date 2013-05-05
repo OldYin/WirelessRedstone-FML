@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import wirelessredstone.api.IActivateGuiOverride;
 import wirelessredstone.api.IGuiRedstoneWirelessOverride;
+import wirelessredstone.api.IWirelessDevice;
 import wirelessredstone.api.IWirelessDeviceData;
 import wirelessredstone.client.network.ClientPacketHandler;
 import wirelessredstone.client.network.handlers.ClientAddonPacketHandler;
@@ -36,7 +37,6 @@ import wirelessredstone.client.network.handlers.ClientTilePacketHandler;
 import wirelessredstone.client.network.handlers.ClientWirelessDevicePacketHandler;
 import wirelessredstone.client.network.packets.executor.ClientEtherPacketRXAddExecutor;
 import wirelessredstone.client.network.packets.executor.ClientEtherPacketTXAddExecutor;
-import wirelessredstone.client.network.packets.executor.ClientGuiTilePacketExecutor;
 import wirelessredstone.client.overrides.ActivateGuiTileEntityOverride;
 import wirelessredstone.client.overrides.RedstoneEtherOverrideSMP;
 import wirelessredstone.client.overrides.TileEntityRedstoneWirelessOverrideSMP;
@@ -44,6 +44,8 @@ import wirelessredstone.client.presentation.TileEntityRedstoneWirelessRenderer;
 import wirelessredstone.client.presentation.gui.GuiRedstoneWirelessInventory;
 import wirelessredstone.client.presentation.gui.GuiRedstoneWirelessR;
 import wirelessredstone.client.presentation.gui.GuiRedstoneWirelessT;
+import wirelessredstone.core.WRCore;
+import wirelessredstone.core.WirelessRedstone;
 import wirelessredstone.data.LoggerRedstoneWireless;
 import wirelessredstone.ether.RedstoneEther;
 import wirelessredstone.network.packets.PacketRedstoneEther;
@@ -51,7 +53,10 @@ import wirelessredstone.network.packets.PacketRedstoneWirelessCommands;
 import wirelessredstone.network.packets.core.PacketIds;
 import wirelessredstone.proxy.WRCommonProxy;
 import wirelessredstone.tileentity.TileEntityRedstoneWireless;
+import wirelessredstone.tileentity.TileEntityRedstoneWirelessR;
+import wirelessredstone.tileentity.TileEntityRedstoneWirelessT;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.network.NetworkRegistry;
 /**
  * WRClientProxy class
  * 
@@ -85,6 +90,7 @@ public class WRClientProxy extends WRCommonProxy {
 	public static void initGUIs() {
 		guiWirelessR = new GuiRedstoneWirelessR();
 		guiWirelessT = new GuiRedstoneWirelessT();
+		NetworkRegistry.instance().registerGuiHandler(WirelessRedstone.instance, WRCore.proxy);
 	}
 
 
@@ -141,16 +147,21 @@ public class WRClientProxy extends WRCommonProxy {
 	public static void loadBlockTextures() {
 		//MinecraftForgeClient.preloadTexture("/WirelessSprites/terrain.png");
 	}
-
-	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world,
-			int x, int y, int z) {
-		return null;
-	}
-
+	
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
+		TileEntity tileentity = world.getBlockTileEntity(x, y, z);
+		if (tileentity != null) {
+			if (tileentity instanceof TileEntityRedstoneWirelessR) {
+				guiWirelessR.assTileEntity((TileEntityRedstoneWireless) tileentity);
+				return guiWirelessR;
+			}
+			if (tileentity instanceof TileEntityRedstoneWirelessT) {
+				guiWirelessT.assTileEntity((TileEntityRedstoneWireless) tileentity);
+				return guiWirelessT;
+			}
+		}
 		return null;
 	}
 
@@ -203,30 +214,6 @@ public class WRClientProxy extends WRCommonProxy {
 		overrides.add(override);
 	}
 
-	@Override
-	public void activateGUI(World world, EntityPlayer entityplayer,
-			TileEntityRedstoneWireless tileentityredstonewireless) {
-		if (!world.isRemote) {
-			super.activateGUI(world, entityplayer, tileentityredstonewireless);
-			return;
-		}
-		for (IActivateGuiOverride override : overrides) {
-			if (override.beforeOpenGui(world, entityplayer, tileentityredstonewireless)) {
-				return;
-			}
-		}
-	}
-
-	@Override
-	public void activateGUI(World world, EntityPlayer entityplayer,
-			IWirelessDeviceData devicedata) {
-		for (IActivateGuiOverride override : overrides) {
-			if (override.beforeOpenGui(world, entityplayer, devicedata)) {
-				return;
-			}
-		}
-	}
-	
 	/**
 	 * Retrieves the world object without parameters
 	 * 
@@ -297,12 +284,6 @@ public class WRClientProxy extends WRCommonProxy {
 				new ClientTilePacketHandler());
 		// GUI Packets
 		// Inventory
-		ClientInventoryGuiPacketHandler guiInventoryPacketHandler = new ClientInventoryGuiPacketHandler();
-		guiInventoryPacketHandler.registerPacketHandler(PacketRedstoneWirelessCommands.wirelessCommands.sendGui.toString(),
-				new ClientGuiTilePacketExecutor());
-		ClientPacketHandler.registerPacketHandler(
-				PacketIds.GUI,
-				guiInventoryPacketHandler);
 		// Device
 		ClientDeviceGuiPacketHandler guiDevicePacketHandler = new ClientDeviceGuiPacketHandler();
 		ClientPacketHandler.registerPacketHandler(

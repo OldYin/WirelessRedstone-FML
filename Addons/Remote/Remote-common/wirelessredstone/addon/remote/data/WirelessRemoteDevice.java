@@ -21,10 +21,10 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import wirelessredstone.addon.remote.items.ItemRedstoneWirelessRemote;
 import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
 import wirelessredstone.addon.remote.overrides.RedstoneWirelessRemoteOverride;
 import wirelessredstone.api.IWirelessDevice;
-import wirelessredstone.api.IWirelessDeviceData;
 import wirelessredstone.client.network.ClientPacketHandler;
 import wirelessredstone.data.WirelessCoordinates;
 import wirelessredstone.device.WirelessTransmitterDevice;
@@ -56,8 +56,8 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 		}
 	}
 	
-	public WirelessRemoteDevice(World world, EntityLiving entityliving, IWirelessDeviceData deviceData) {
-		super(world, entityliving, deviceData);
+	public WirelessRemoteDevice(World world, EntityLiving entityliving, ItemStack itemstack) {
+		super(world, entityliving, itemstack);
 	}
 
 /*	@Override
@@ -82,11 +82,6 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	 */
 	public static void addOverride(RedstoneWirelessRemoteOverride override) {
 		overrides.add(override);
-	}
-
-	@Override
-	public Class<? extends IWirelessDeviceData> getDeviceDataClass() {
-		return WirelessRemoteData.class;
 	}
 
 	@Override
@@ -144,7 +139,10 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 			if (remoteTransmitter == null) {
 				return false;
 			} else {
-				PacketWirelessDevice packet = new PacketWirelessDevice(remoteTransmitter.data);
+				PacketWirelessDevice packet = new PacketWirelessDevice(remoteTransmitter.getName());
+				packet.setDeviceFreq(remoteTransmitter.getFreq());
+				packet.setDeviceState(false);
+				packet.setDeviceDimension(world);
 				packet.setPosition(remoteTransmitter.xCoord, remoteTransmitter.yCoord, remoteTransmitter.zCoord, 0);
 				packet.setCommand("deactivateRemote");
 				packet.isForced(true);
@@ -190,8 +188,8 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	}
 
 	@Override
-	public PacketWirelessDevice getDevicePacket(IWirelessDeviceData devicedata) {
-		return new PacketWirelessDevice(devicedata);
+	public PacketWirelessDevice getDevicePacket(World world, ItemStack itemstack) {
+		return new PacketWirelessDevice(world, this);
 	}
 
 	@Override
@@ -202,5 +200,40 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	@Override
 	protected String getDeactivateCommand() {
 		return PacketRemoteCommands.remoteCommands.deactivate.toString();
+	}
+
+	@Override
+	public boolean getState() {
+		if (this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
+			return ((ItemRedstoneWirelessRemote)this.item.getItem()).getState(this.item);
+		}
+		return false;
+	}
+
+	@Override
+	public void setState(boolean state) {
+		if (this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
+			((ItemRedstoneWirelessRemote)this.item.getItem()).setState(this.item, state);
+		}
+	}
+
+	@Override
+	public String getFreq() {
+		if (this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
+			return ((ItemRedstoneWirelessRemote)this.item.getItem()).getFreq(this.item, this.getWorld()).toString();
+		}
+		return "0";
+	}
+
+	@Override
+	public void setFreq(String freq) {
+		if (this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
+			((ItemRedstoneWirelessRemote)this.item.getItem()).setFreq(this.item, freq);
+		}
+	}
+
+	@Override
+	public void setDeviceState(boolean state) {
+		this.setState(state);
 	}
 }

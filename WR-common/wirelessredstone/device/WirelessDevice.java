@@ -27,17 +27,21 @@ import wirelessredstone.data.WirelessCoordinates;
  * @author Eurymachus
  */
 public abstract class WirelessDevice implements IWirelessDevice {
-	
-	protected IWirelessDeviceData data;
+
+	protected Object freq;
+	protected String name;
 	protected int xCoord, yCoord, zCoord;
 	protected EntityLiving owner;
+	protected ItemStack item;
 	
-	protected WirelessDevice(World world, EntityLiving entity, IWirelessDeviceData data) {
-		if (data != null) {
-			this.data = data;
+	protected WirelessDevice(World world, EntityLiving entity, ItemStack itemstack) {
+		if (itemstack != null) {
+			this.item = itemstack;
 		} else {
-			this.data = WirelessDeviceData.getDeviceData(this.getDeviceDataClass(), this.getName(), entity.getHeldItem(), world, entity);
+			this.item = entity.getHeldItem();
 		}
+		this.freq = "0";
+		this.name = "Wireless Device";
 		this.owner = entity;
 		this.setCoords((int)entity.posX, (int)entity.posY, (int)entity.posZ);
 	}
@@ -56,9 +60,7 @@ public abstract class WirelessDevice implements IWirelessDevice {
 	}
 
 	@Override
-	public String getFreq() {
-		return this.data.getDeviceFreq();
-	}
+	public abstract String getFreq();
 
 	@Override
 	public void setCoords(WirelessCoordinates coords) {
@@ -82,32 +84,25 @@ public abstract class WirelessDevice implements IWirelessDevice {
 	
 	@Override
 	public World getWorld() {
-		return DimensionManager.getWorld(this.data.getDeviceDimension());
+		return this.owner.worldObj;
 	}
 
 	@Override
-	public void setFreq(String freq) {
-		this.data.setDeviceFreq(freq);
-	}
-
-	/**
-	 * Get the device data class.
-	 * 
-	 * @return Device data class
-	 */
-	protected abstract Class<? extends IWirelessDeviceData> getDeviceDataClass();
+	public abstract void setFreq(String freq);
 
 	@Override
 	public void activate(World world, Entity entity) {
-		this.data.setDeviceState(true);
+		this.setDeviceState(true);
 		if (!world.isRemote) {
 			this.doActivateCommand();
 		}
 	}
 
+	public abstract void setDeviceState(boolean state);
+
 	@Override
 	public void deactivate(World world, Entity entity, boolean isForced) {
-		this.data.setDeviceState(false);
+		this.setDeviceState(false);
 		if (!world.isRemote) {
 			this.doDeactivateCommand();
 		}
@@ -129,8 +124,7 @@ public abstract class WirelessDevice implements IWirelessDevice {
 		if (entityliving != null) {
 			ItemStack itemstack = entityliving.getHeldItem();
 			if (itemstack != null) {
-				return WirelessDeviceData.getDeviceData(this.getDeviceDataClass(), this.getName(), itemstack, this.getWorld(),
-						entityliving).getDeviceFreq() == this.getFreq();
+				return this.item != null ? itemstack.equals(this.item) ? true : false : false;
 			}
 		}
 		return false;

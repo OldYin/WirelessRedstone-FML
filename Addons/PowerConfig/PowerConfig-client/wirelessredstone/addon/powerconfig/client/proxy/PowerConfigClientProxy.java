@@ -22,7 +22,6 @@ import net.minecraft.src.ModLoader;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
-import wirelessredstone.addon.powerconfig.client.network.packets.executors.ClientRemoteOpenGui;
 import wirelessredstone.addon.powerconfig.client.presentation.gui.GuiRedstoneWirelessPowerDirector;
 import wirelessredstone.addon.powerconfig.core.PCCore;
 import wirelessredstone.addon.powerconfig.core.PowerConfigurator;
@@ -106,13 +105,6 @@ public class PowerConfigClientProxy extends PowerConfigCommonProxy {
 			Class<? extends TileEntity> clazz) {
 	}
 
-	@Override
-	public void activateGUI(World world, EntityPlayer entityplayer, IWirelessDeviceData devicedata) {
-		if (!world.isRemote) {
-			super.activateGUI(world, entityplayer, devicedata);
-		}
-	}
-	
 	/**
 	 * Retrieves the world object without parameters
 	 * 

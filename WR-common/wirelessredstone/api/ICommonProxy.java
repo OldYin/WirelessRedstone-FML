@@ -59,24 +59,6 @@ public interface ICommonProxy extends IGuiHandler {
 	public void addOverrides();
 
 	/**
-	 * Called on activity in the GUI.
-	 * 
-	 * @param world Minecraft world object.
-	 * @param entityplayer The player that is opening the GUI
-	 * @param tileentityredstonewireless Tile entity related to the GUI
-	 */
-	public void activateGUI(World world, EntityPlayer entityplayer, TileEntityRedstoneWireless tileentityredstonewireless);
-	
-	/**
-	 * Called on activity in the GUI.
-	 * 
-	 * @param world Minecraft world object.
-	 * @param entityplayer The player that is opening the GUI
-	 * @param device Wireless Device related to the GUI
-	 */
-	public void activateGUI(World world, EntityPlayer entityplayer, IWirelessDeviceData devicedata);
-
-	/**
 	 * Fetches the current minecraft world object.
 	 * 
 	 * @return Minecraft world object.

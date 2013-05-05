@@ -13,6 +13,7 @@ package wirelessredstone.api;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import wirelessredstone.data.WirelessCoordinates;
 import wirelessredstone.network.packets.PacketWirelessDevice;
@@ -122,9 +123,22 @@ public interface IWirelessDevice {
 	/**
 	 * Return a packet to send for this device
 	 * 
-	 * @param devicedata the device data to send
+	 * @param item the device data to send
 	 * 
 	 * @return the packet to send
 	 */
-	PacketWirelessDevice getDevicePacket(IWirelessDeviceData devicedata);
+	PacketWirelessDevice getDevicePacket(World world, ItemStack item);
+
+	/**
+	 * Return the state of the device
+	 * 
+	 * @return device state
+	 */
+	boolean getState();
+	
+	/**
+	 * Set the state of the device
+	 * 
+	 */
+	void setState(boolean state);
 }

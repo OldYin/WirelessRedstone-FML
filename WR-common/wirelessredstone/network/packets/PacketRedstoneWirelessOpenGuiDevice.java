@@ -34,12 +34,12 @@ public class PacketRedstoneWirelessOpenGuiDevice extends PacketWireless implemen
 				.toString());
 		this.payload = new PacketPayload(1, 0, 4, 0);
 		this.setDeviceFreq(devicedata.getDeviceFreq());
-		this.setDeviceID(devicedata.getDeviceID());
+		//this.setDeviceID(devicedata.getDeviceID());
 		this.setDeviceName(devicedata.getDeviceName());
-		this.setDeviceType(devicedata.getDeviceType());
+		//this.setDeviceType(devicedata.getDeviceType());
 	}
 	
-	@Override
+/*	@Override
 	public void setDeviceID(int deviceID) {
 		this.payload.setIntPayload(0, deviceID);
 	}
@@ -47,14 +47,14 @@ public class PacketRedstoneWirelessOpenGuiDevice extends PacketWireless implemen
 	@Override
 	public void setDeviceType(String deviceType) {
 		this.payload.setStringPayload(1, deviceType);
-	}
+	}*/
 	
 	@Override
 	public void setDeviceName(String deviceName) {
-		this.payload.setStringPayload(2, deviceName);
+		this.payload.setStringPayload(1, deviceName);
 	}
 	
-	@Override
+/*	@Override
 	public int getDeviceID() {
 		return this.payload.getIntPayload(0);
 	}
@@ -62,15 +62,16 @@ public class PacketRedstoneWirelessOpenGuiDevice extends PacketWireless implemen
 	@Override
 	public String getDeviceType() {
 		return this.payload.getStringPayload(1);
-	}
+	}*/
 	
 	@Override
 	public String getDeviceName() {
-		return this.payload.getStringPayload(2);
+		return this.payload.getStringPayload(1);
 	}
 
 	@Override
-	public void setDeviceDimension(int dimensionID) {
+	public void setDeviceDimension(World world) {
+		this.payload.setIntPayload(0, world.provider.dimensionId);
 	}
 
 	@Override
@@ -95,7 +96,7 @@ public class PacketRedstoneWirelessOpenGuiDevice extends PacketWireless implemen
 
 	@Override
 	public int getDeviceDimension() {
-		return 0;
+		return this.payload.getIntPayload(0);
 	}
 
 	@Override

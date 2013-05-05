@@ -13,22 +13,15 @@ package wirelessredstone.addon.remote.network.packets.executor;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
-import wirelessredstone.addon.remote.data.WirelessRemoteData;
 import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
 import wirelessredstone.api.IWirelessDevice;
-import wirelessredstone.api.IWirelessDeviceData;
+import wirelessredstone.network.packets.PacketWireless;
 import wirelessredstone.network.packets.executor.DevicePacketActivateExecutor;
 
 public class ActivateRemoteExecutor extends DevicePacketActivateExecutor {
 
 	@Override
-	protected IWirelessDevice getDevice(World world, EntityLiving entityliving, IWirelessDeviceData deviceData) {
-		return new WirelessRemoteDevice(world, entityliving, deviceData);
+	protected IWirelessDevice getDevice(World world, EntityLiving entityliving, PacketWireless packet) {
+		return new WirelessRemoteDevice(world, entityliving, entityliving.getHeldItem());
 	}
-
-	@Override
-	protected Class<? extends IWirelessDeviceData> getDeviceDataClass() {
-		return WirelessRemoteData.class;
-	}
-
 }

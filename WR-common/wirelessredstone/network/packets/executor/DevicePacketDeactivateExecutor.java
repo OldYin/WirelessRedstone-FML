@@ -24,11 +24,8 @@ public abstract class DevicePacketDeactivateExecutor implements IDevicePacketExe
 	
 	@Override
 	public void execute(PacketWireless packet, World world, EntityPlayer entityplayer) {
-		IWirelessDeviceData deviceData = ((PacketWirelessDevice)packet).getDeviceData(this.getDeviceDataClass(), world, entityplayer);
-		this.getDevice(world, entityplayer, deviceData).deactivate(world, entityplayer, ((PacketWirelessDevice)packet).isForced());
+		this.getDevice(world, entityplayer, packet).deactivate(world, entityplayer, ((PacketWirelessDevice)packet).isForced());
 	}
 
-	protected abstract Class<? extends IWirelessDeviceData> getDeviceDataClass();
-
-	protected abstract IWirelessDevice getDevice(World world, EntityLiving entityliving, IWirelessDeviceData deviceData);
+	protected abstract IWirelessDevice getDevice(World world, EntityLiving entityliving, PacketWireless packet);
 }

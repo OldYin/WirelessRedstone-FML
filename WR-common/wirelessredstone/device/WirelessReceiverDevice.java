@@ -12,6 +12,7 @@
 package wirelessredstone.device;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import wirelessredstone.api.IWirelessDeviceData;
 import wirelessredstone.ether.RedstoneEther;
@@ -20,8 +21,8 @@ import wirelessredstone.network.packets.PacketWirelessDevice;
 
 public abstract class WirelessReceiverDevice extends WirelessDevice {
 	
-	public WirelessReceiverDevice(World world, EntityLiving entityliving, IWirelessDeviceData deviceData) {
-		super(world, entityliving, deviceData);
+	public WirelessReceiverDevice(World world, EntityLiving entityliving, ItemStack itemstack) {
+		super(world, entityliving, itemstack);
 	}
 	
 	@Override
@@ -34,7 +35,7 @@ public abstract class WirelessReceiverDevice extends WirelessDevice {
 		RedstoneEther.getInstance().addReceiver(this.getWorld(),
 				this.getCoords().getX(), this.getCoords().getY(),
 				this.getCoords().getZ(), this.getFreq());
-		PacketWirelessDevice packet = this.getDevicePacket(this.data);
+		PacketWirelessDevice packet = this.getDevicePacket(this.getWorld(), this.item);
 		packet.setPosition(
 				this.xCoord,
 				this.yCoord,
@@ -49,7 +50,7 @@ public abstract class WirelessReceiverDevice extends WirelessDevice {
 		RedstoneEther.getInstance().remReceiver(this.getWorld(),
 				this.getCoords().getX(), this.getCoords().getY(),
 				this.getCoords().getZ(), this.getFreq());
-		PacketWirelessDevice packet = this.getDevicePacket(this.data);
+		PacketWirelessDevice packet = this.getDevicePacket(this.getWorld(), this.item);
 		packet.setPosition(
 				this.xCoord,
 				this.yCoord,

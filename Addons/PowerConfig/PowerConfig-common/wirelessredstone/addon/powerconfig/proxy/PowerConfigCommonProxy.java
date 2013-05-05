@@ -56,15 +56,6 @@ public class PowerConfigCommonProxy implements ICommonProxy {
 	}
 
 	@Override
-	public void activateGUI(World world, EntityPlayer entityplayer, TileEntityRedstoneWireless tileentityredstonewireless) {
-		// TODO :: Activate GUI
-	}
-
-	@Override
-	public void activateGUI(World world, EntityPlayer entityplayer, IWirelessDeviceData devicedata) {
-	}
-
-	@Override
 	public World getWorld() {
 		return null;
 	}

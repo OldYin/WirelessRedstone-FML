@@ -12,9 +12,10 @@
 package wirelessredstone.network.packets;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import wirelessredstone.api.IWirelessDevice;
 import wirelessredstone.api.IWirelessDeviceData;
-import wirelessredstone.device.WirelessDeviceData;
 import wirelessredstone.network.packets.core.PacketIds;
 import wirelessredstone.network.packets.core.PacketPayload;
 
@@ -36,24 +37,22 @@ public class PacketWirelessDevice extends PacketWireless implements IWirelessDev
 		this.setDeviceName(name);
 	}
 
-	public PacketWirelessDevice(IWirelessDeviceData data) {
-		this(data.getDeviceName());
-		this.setDeviceID(data.getDeviceID());
-		this.setDeviceFreq(data.getDeviceFreq());
-		this.setDeviceState(data.getDeviceState());
-		this.setDeviceType(data.getDeviceType());
-		this.setDeviceDimension(data.getDeviceDimension());
+/*	@Override
+	public void setDeviceID(int id) {
+		this.payload.setIntPayload(0, id);
+	}*/
+
+	public PacketWirelessDevice(World world, IWirelessDevice wirelessDevice) {
+		this(wirelessDevice.getName());
+		this.setDeviceDimension(world);
+		this.setDeviceFreq(wirelessDevice.getFreq());
+		this.setDeviceState(wirelessDevice.getState());
 		this.isForced(false);
 	}
 
 	@Override
-	public void setDeviceID(int id) {
-		this.payload.setIntPayload(0, id);
-	}
-
-	@Override
-	public void setDeviceDimension(int dimensionID) {
-		this.payload.setIntPayload(1, dimensionID);
+	public void setDeviceDimension(World world) {
+		this.payload.setIntPayload(0, world.provider.dimensionId);
 	}
 
 	@Override
@@ -73,33 +72,33 @@ public class PacketWirelessDevice extends PacketWireless implements IWirelessDev
 
 	@Override
 	public int getDeviceDimension() {
-		return this.payload.getIntPayload(1);
-	}
-
-	@Override
-	public int getDeviceID() {
 		return this.payload.getIntPayload(0);
 	}
+
+/*	@Override
+	public int getDeviceID() {
+		return this.payload.getIntPayload(0);
+	}*/
 
 	@Override
 	public void setDeviceName(String name) {
 		this.payload.setStringPayload(1, name);
 	}
 
-	@Override
+/*	@Override
 	public void setDeviceType(String devicetype) {
 		this.payload.setStringPayload(2, devicetype);
-	}
+	}*/
 
 	@Override
 	public String getDeviceName() {
 		return this.payload.getStringPayload(1);
 	}
 
-	@Override
+/*	@Override
 	public String getDeviceType() {
 		return this.payload.getStringPayload(2);
-	}
+	}*/
 
 	@Override
 	public boolean getDeviceState() {
@@ -117,15 +116,5 @@ public class PacketWirelessDevice extends PacketWireless implements IWirelessDev
 	@Override
 	public boolean targetExists(World world) {
 		return false;
-	}
-	
-	public IWirelessDeviceData getDeviceData(Class<? extends IWirelessDeviceData> deviceDataClass, World world, EntityLiving entityliving) {
-		return WirelessDeviceData.getDeviceData(
-				deviceDataClass,
-				this.getDeviceType(),
-				this.getDeviceID(),
-				this.getDeviceName(),
-				world,
-				entityliving);
 	}
 }

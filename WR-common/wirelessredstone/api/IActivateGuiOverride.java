@@ -45,5 +45,5 @@ public interface IActivateGuiOverride {
 	 * @param data The world saved data.
 	 * @return Exits prematurely if true, skipping existing code.
 	 */
-	public boolean beforeOpenGui(World world, EntityPlayer entityplayer, IWirelessDeviceData devicedata);
+	public boolean beforeOpenGui(World world, EntityPlayer entityplayer, IWirelessDevice device);
 }

@@ -23,23 +23,26 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import wirelessredstone.addon.remote.client.network.packets.executors.ClientRemoteChangeFreqExecutor;
-import wirelessredstone.addon.remote.client.network.packets.executors.ClientRemoteOpenGui;
 import wirelessredstone.addon.remote.client.overrides.ActivateGuiRemoteOverride;
 import wirelessredstone.addon.remote.client.overrides.GuiRedstoneWirelessRemoteOverride;
 import wirelessredstone.addon.remote.client.presentation.gui.GuiRedstoneWirelessRemote;
 import wirelessredstone.addon.remote.client.tickhandler.ClientTickHandler;
+import wirelessredstone.addon.remote.core.WRemoteCore;
+import wirelessredstone.addon.remote.core.WirelessRemote;
 import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
 import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
 import wirelessredstone.addon.remote.network.packets.executor.ActivateRemoteExecutor;
 import wirelessredstone.addon.remote.network.packets.executor.DeactivateRemoteExecutor;
 import wirelessredstone.addon.remote.proxy.WRemoteCommonProxy;
 import wirelessredstone.api.IGuiRedstoneWirelessDeviceOverride;
+import wirelessredstone.api.IWirelessDevice;
 import wirelessredstone.api.IWirelessDeviceData;
 import wirelessredstone.client.network.ClientPacketHandler;
 import wirelessredstone.client.proxy.WRClientProxy;
 import wirelessredstone.network.packets.PacketRedstoneEther;
 import wirelessredstone.network.packets.PacketRedstoneWirelessCommands;
 import wirelessredstone.network.packets.core.PacketIds;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 /**
@@ -72,6 +75,7 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 		IGuiRedstoneWirelessDeviceOverride override = new GuiRedstoneWirelessRemoteOverride();
 		guiWirelessRemote.addOverride(override);
 		WRClientProxy.addOverride(new ActivateGuiRemoteOverride());
+		NetworkRegistry.instance().registerGuiHandler(WirelessRemote.instance, WRemoteCore.proxy);
 	}
 	
 	@Override
@@ -88,15 +92,11 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 	}
 
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world,
-			int x, int y, int z) {
-		return null;
-	}
-
-	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world,
 			int x, int y, int z) {
-		return null;
+		IWirelessDevice wirelessDevice = new WirelessRemoteDevice(world, player, player.getHeldItem());
+		guiWirelessRemote.assWirelessDevice(wirelessDevice, player);
+		return guiWirelessRemote;
 	}
 
 	@Override
@@ -107,13 +107,6 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 	@Override
 	public void registerTileEntitySpecialRenderer(
 			Class<? extends TileEntity> clazz) {
-	}
-
-	@Override
-	public void activateGUI(World world, EntityPlayer entityplayer, IWirelessDeviceData devicedata) {
-		if (!world.isRemote) {
-			super.activateGUI(world, entityplayer, devicedata);
-		}
 	}
 	
 	/**
@@ -172,9 +165,6 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 		ClientPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(
 				PacketRemoteCommands.remoteCommands.changeFreq.toString(),
 				new ClientRemoteChangeFreqExecutor());
-		ClientPacketHandler.getPacketHandler(PacketIds.DEVICEGUI).registerPacketHandler(
-				PacketRemoteCommands.remoteCommands.openGui.toString(),
-				new ClientRemoteOpenGui());
 	}
 
 	@Override

@@ -11,22 +11,11 @@
  */
 package wirelessredstone.api;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
 public interface IWirelessDeviceData {
 
-	/**
-	 * Set the device's ID.
-	 * 
-	 * @param id Device ID.
-	 */
-	public void setDeviceID(int id);
-
-	/**
-	 * Set the device type.
-	 * 
-	 * @param type Device type.
-	 * 		e.g. "item.wirelessredstone.remote"
-	 */
-	public void setDeviceType(String type);
 
 	/**
 	 * Set the device's name.
@@ -40,7 +29,7 @@ public interface IWirelessDeviceData {
 	 * 
 	 * @param dimensionID The world dimensionID.
 	 */
-	public void setDeviceDimension(int dimensionID);
+	public void setDeviceDimension(World world);
 
 	/**
 	 * Set the device's frequency.
@@ -57,20 +46,6 @@ public interface IWirelessDeviceData {
 	 * @return 
 	 */
 	public void setDeviceState(boolean state);
-
-	/**
-	 * Get the device type.
-	 * 
-	 * @return Device type.
-	 */
-	public String getDeviceType();
-
-	/**
-	 * Get the device ID.
-	 * 
-	 * @return Device ID.
-	 */
-	public int getDeviceID();
 
 	/**
 	 * Get the device name.

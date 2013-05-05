@@ -23,7 +23,6 @@ import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import wirelessredstone.addon.remote.api.IRemoteCommonProxy;
-import wirelessredstone.addon.remote.data.WirelessRemoteData;
 import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
 import wirelessredstone.addon.remote.network.packets.PacketOpenGuiRemote;
 import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
@@ -34,6 +33,7 @@ import wirelessredstone.addon.remote.network.packets.executor.RemoteChangeReceiv
 import wirelessredstone.addon.remote.overrides.RedstoneEtherOverrideRemote;
 import wirelessredstone.api.IWirelessDevice;
 import wirelessredstone.api.IWirelessDeviceData;
+import wirelessredstone.device.ContainerRedstoneWirelessDevice;
 import wirelessredstone.ether.RedstoneEther;
 import wirelessredstone.network.ServerPacketHandler;
 import wirelessredstone.network.handlers.ServerDeviceGuiPacketHandler;
@@ -48,7 +48,7 @@ public class WRemoteCommonProxy implements IRemoteCommonProxy {
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		return null;
+		return new ContainerRedstoneWirelessDevice(new WirelessRemoteDevice(world, player, player.getHeldItem()));
 	}
 
 	@Override
@@ -64,21 +64,6 @@ public class WRemoteCommonProxy implements IRemoteCommonProxy {
 	@Override
 	public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz) {
 
-	}
-
-	@Override
-	public void activateGUI(World world, EntityPlayer entityplayer, TileEntityRedstoneWireless tileentityredstonewireless) {
-	}
-
-	@Override
-	public void activateGUI(World world, EntityPlayer entityplayer, IWirelessDeviceData devicedata) {
-		if (!world.isRemote) {
-			if (devicedata instanceof WirelessRemoteData) {
-				ServerDeviceGuiPacketHandler.sendGuiPacketTo(
-						(EntityPlayerMP) entityplayer,
-						new PacketOpenGuiRemote(devicedata));
-			}
-		}
 	}
 
 	@Override
