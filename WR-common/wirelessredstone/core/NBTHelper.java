@@ -1,4 +1,4 @@
-package wirelessredstone.core.lib;
+package wirelessredstone.core;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
