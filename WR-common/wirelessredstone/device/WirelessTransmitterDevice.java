@@ -45,14 +45,14 @@ public abstract class WirelessTransmitterDevice extends WirelessDevice {
 				this.zCoord,
 				this.getFreq(),
 				true);
-		PacketWirelessDevice packet = this.getDevicePacket(this.getWorld(), this.item);
-		packet.setPosition(
-				this.xCoord,
-				this.yCoord,
-				this.zCoord,
-				0);
-		packet.setCommand(this.getActivateCommand());
-		ServerPacketHandler.broadcastPacket(packet.getPacket());
+		//PacketWirelessDevice packet = this.getDevicePacket(this.getWorld(), this.item);
+		//packet.setPosition(
+		//		this.xCoord,
+		//		this.yCoord,
+		//		this.zCoord,
+		//		0);
+		//packet.setCommand(this.getActivateCommand());
+		//ServerPacketHandler.broadcastPacket(packet.getPacket());
 	}
 	
 	@Override
@@ -63,14 +63,14 @@ public abstract class WirelessTransmitterDevice extends WirelessDevice {
 				this.yCoord,
 				this.zCoord,
 				this.getFreq());
-		PacketWirelessDevice packet = this.getDevicePacket(this.getWorld(), this.item);
-		packet.setPosition(
-				this.xCoord,
-				this.yCoord,
-				this.zCoord,
-				0);
-		packet.setCommand(this.getDeactivateCommand());
-		ServerPacketHandler.broadcastPacket(packet.getPacket());
+		//PacketWirelessDevice packet = this.getDevicePacket(this.getWorld(), this.item);
+		//packet.setPosition(
+		//		this.xCoord,
+		//		this.yCoord,
+		//		this.zCoord,
+		//		0);
+		//packet.setCommand(this.getDeactivateCommand());
+		//ServerPacketHandler.broadcastPacket(packet.getPacket());
 	}
 
 }
