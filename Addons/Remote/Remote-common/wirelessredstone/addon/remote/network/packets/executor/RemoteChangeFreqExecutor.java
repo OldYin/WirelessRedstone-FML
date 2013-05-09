@@ -36,9 +36,12 @@ public class RemoteChangeFreqExecutor implements IDevicePacketExecutor {
 				int freq = Integer.parseInt(packet.getDeviceFreq());
 				int oldFreq = Integer.parseInt(remote.getFreq(itemstack, world).toString());
 				remote.setFreq(itemstack, Integer.toString(oldFreq + freq));
-				//PacketWirelessDevice remotePacket = new PacketWirelessDevice(world, device);
-				//remotePacket.setCommand(PacketRemoteCommands.remoteCommands.changeFreq.toString());
-				//ServerPacketHandler.sendPacketTo((EntityPlayerMP) entityplayer, remotePacket.getPacket());
+				PacketWirelessDevice remotePacket = new PacketWirelessDevice(remote.getName(itemstack));
+				remotePacket.setDeviceDimension(world);
+				remotePacket.setDeviceFreq(remote.getFreq(itemstack, world).toString());
+				remotePacket.setDeviceState(remote.getState(itemstack));
+				remotePacket.setCommand(PacketRemoteCommands.remoteCommands.changeFreq.toString());
+				ServerPacketHandler.sendPacketTo((EntityPlayerMP) entityplayer, remotePacket.getPacket());
 			}
 		}
 	}

@@ -59,21 +59,7 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	public WirelessRemoteDevice(World world, EntityLiving entityliving, ItemStack itemstack) {
 		super(world, entityliving, itemstack);
 	}
-
-/*	@Override
-	public boolean isBeingHeld() {
-		boolean flag = super.isBeingHeld();
-		if (flag) {
-			if (this.getOwner() instanceof EntityPlayer) {
-				return ((EntityPlayer)this.getOwner()).inventory.currentItem == this.slot
-						&& flag;
-			} else {
-				return flag;
-			}
-		}
-		return false;
-	}*/
-
+	
 	/**
 	 * Adds a Remote override to the Remote.
 	 * 
@@ -86,7 +72,7 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 
 	@Override
 	public String getName() {
-		if (this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
+		if (this.item != null && this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
 			return ((ItemRedstoneWirelessRemote)this.item.getItem()).getName(this.item);
 		}
 		return "Wireless Remote";
@@ -138,20 +124,19 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	@SideOnly(Side.CLIENT)
 	public static boolean deactivatePlayerWirelessRemote(World world, EntityLiving entityliving) {
 		if (entityliving instanceof EntityPlayer) {
-			EntityPlayer entityplayer = (EntityPlayer)entityliving;
-			ItemStack itemstack = entityplayer.getHeldItem();
-			if (itemstack.getItem() instanceof ItemRedstoneWirelessRemote) {
-				WirelessRemoteDevice remote = new WirelessRemoteDevice(world, entityplayer, itemstack);
+			if (remoteTransmitter != null) {
+				WirelessRemoteDevice remote = remoteTransmitter;
+				remoteTransmitter = null;
 				PacketWirelessDevice packet = new PacketWirelessDevice(remote.getName());
-				packet.setDeviceFreq(remote.getFreq().toString());
+				packet.setDeviceFreq(remote.getFreq());
 				packet.setDeviceState(false);
 				packet.setDeviceDimension(world);
 				packet.setPosition(remote.xCoord, remote.yCoord, remote.zCoord, 0);
 				packet.setCommand(PacketRemoteCommands.remoteCommands.deactivate.toString());
 				packet.isForced(true);
 				ClientPacketHandler.sendPacket(packet.getPacket());
-				return true;
 			}
+			return true;
 		}
 		return false;
 	}
@@ -205,7 +190,7 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 
 	@Override
 	public boolean getState() {
-		if (this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
+		if (this.item != null && this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
 			return ((ItemRedstoneWirelessRemote)this.item.getItem()).getState(this.item);
 		}
 		return false;
@@ -213,14 +198,14 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 
 	@Override
 	public void setState(boolean state) {
-		if (this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
+		if (this.item != null && this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
 			((ItemRedstoneWirelessRemote)this.item.getItem()).setState(this.item, state);
 		}
 	}
 
 	@Override
 	public String getFreq() {
-		if (this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
+		if (this.item != null && this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
 			return ((ItemRedstoneWirelessRemote)this.item.getItem()).getFreq(this.item, this.getWorld()).toString();
 		}
 		return "0";

@@ -22,8 +22,8 @@ import net.minecraft.world.World;
 
 import org.lwjgl.input.Mouse;
 
-import wirelessredstone.addon.remote.core.WRemoteCore;
 import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
+import wirelessredstone.addon.remote.items.ItemRedstoneWirelessRemote;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -43,7 +43,7 @@ public class ClientTickHandler implements ITickHandler {
 			if (mouseClicked()
 					&& WirelessRemoteDevice.remoteTransmitter == null
 					&& entityplayer.inventory.getCurrentItem() != null
-					&& entityplayer.inventory.getCurrentItem().getItem() == WRemoteCore.itemRemote
+					&& entityplayer.inventory.getCurrentItem().getItem() instanceof ItemRedstoneWirelessRemote
 					&& !entityplayer.isSneaking()) {
 				WirelessRemoteDevice.activatePlayerWirelessRemote(world, entityplayer);
 			}

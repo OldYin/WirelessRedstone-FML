@@ -21,19 +21,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import wirelessredstone.addon.remote.core.WRemoteCore;
 import wirelessredstone.addon.remote.core.WirelessRemote;
 import wirelessredstone.addon.remote.core.lib.IconLib;
+import wirelessredstone.addon.remote.core.lib.ReferenceLib;
 import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
 import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
+import wirelessredstone.api.IWirelessDevice;
 import wirelessredstone.client.network.handlers.ClientRedstoneEtherPacketHandler;
+import wirelessredstone.core.NBTHelper;
 import wirelessredstone.core.lib.GuiLib;
-import wirelessredstone.core.lib.NBTHelper;
+import wirelessredstone.core.lib.NBTLib;
 import wirelessredstone.tileentity.TileEntityRedstoneWirelessR;
 
 public class ItemRedstoneWirelessRemote extends Item {
@@ -68,24 +69,20 @@ public class ItemRedstoneWirelessRemote extends Item {
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer,
 			World world, int i, int j, int k, int l, float a, float b, float c) {
-		//WirelessRemoteData remote = (WirelessRemoteData) WirelessDeviceData.getDeviceData(WirelessRemoteData.class, "Wireless Remote", itemstack,
-		//		world, entityplayer);
 		if (entityplayer.isSneaking()) {
 			TileEntity tileentity = world.getBlockTileEntity(i, j, k);
-			if (tileentity != null) {
-				if (tileentity instanceof TileEntityRedstoneWirelessR) {
-					if (world.isRemote) {
-						ClientRedstoneEtherPacketHandler.sendRedstoneEtherPacket(
-								PacketRemoteCommands.remoteCommands.updateReceiver.toString(),
-								((TileEntityRedstoneWirelessR)tileentity).getBlockCoord(0), 
-								((TileEntityRedstoneWirelessR)tileentity).getBlockCoord(1),
-								((TileEntityRedstoneWirelessR)tileentity).getBlockCoord(2), 
-								this.getFreq(itemstack, world), 
-								false
-						);
-					}
-					return true;
+			if (tileentity != null && tileentity instanceof TileEntityRedstoneWirelessR) {
+				if (world.isRemote) {
+					ClientRedstoneEtherPacketHandler.sendRedstoneEtherPacket(
+							PacketRemoteCommands.remoteCommands.updateReceiver.toString(),
+							((TileEntityRedstoneWirelessR)tileentity).getBlockCoord(0), 
+							((TileEntityRedstoneWirelessR)tileentity).getBlockCoord(1),
+							((TileEntityRedstoneWirelessR)tileentity).getBlockCoord(2), 
+							this.getFreq(itemstack, world), 
+							false
+					);
 				}
+				return true;
 			}
 			entityplayer.openGui(WirelessRemote.instance, GuiLib.GUIID_DEVICE, world, i, j, k);
 			return true;
@@ -98,10 +95,7 @@ public class ItemRedstoneWirelessRemote extends Item {
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
 		if (!entityplayer.isSneaking()) {
-			//this.setState(itemstack, true);
-			entityplayer.setItemInUse(itemstack, 72000);
-			entityplayer.setEating(false);
-			//WRemoteCore.proxy.activateRemote(world, entityplayer);
+			//entityplayer.setItemInUse(itemstack, 72000);
 			String side = world != null ? !world.isRemote ? "Server" : "Client" : "Null";
 			System.out.println("Freq: " + this.getFreq(itemstack, world) + " | Side: " + side);
 			if (!world.isRemote) {
@@ -121,10 +115,19 @@ public class ItemRedstoneWirelessRemote extends Item {
 	}
 	
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {
-		System.out.println("Stopped Using : " + par2World != null ? !par2World.isRemote ? "Server" : "Client" : "Null");
 		WirelessRemoteDevice.deactivatePlayerWirelessRemote(par2World, par3EntityPlayer);
-		//WRemoteCore.proxy.deactivateRemote(par2World, par3EntityPlayer);
-		//this.setState(par1ItemStack, false);
+	}
+	
+	@Override
+	public void onUpdate(ItemStack itemstack, World world, Entity entity, int i, boolean isHeld) {
+		if (entity instanceof EntityPlayer) {
+			EntityPlayer entityplayer = (EntityPlayer) entity;
+			if (itemstack != null && itemstack.getItem() instanceof ItemRedstoneWirelessRemote) {
+				String freq = this.getFreq(itemstack, world).toString();
+				if (!isHeld || (!WRemoteCore.proxy.isRemoteOn(world, entityplayer, freq) && !WRemoteCore.proxy.deactivateRemote(world, entityplayer))) {
+				}
+			}
+		}
 	}
 
 	@Override
@@ -138,20 +141,6 @@ public class ItemRedstoneWirelessRemote extends Item {
 			return iconList[0];
 		return iconList[1];
 	}
-
-/*	@Override
-	public void onUpdate(ItemStack itemstack, World world, Entity entity,
-			int i, boolean isHeld) {
-		if (entity instanceof EntityPlayer) {
-			EntityPlayer entityplayer = (EntityPlayer) entity;
-		
-			//WirelessRemoteData data = (WirelessRemoteData) WirelessDeviceData.getDeviceData(WirelessRemoteData.class, "Wireless Remote", itemstack,
-			//		world, entityplayer);
-			//String freq = String.valueOf(this.getFreq(itemstack, world));//data.getDeviceFreq();
-			//if ((!isHeld || !WRemoteCore.proxy.isRemoteOn(world, entityplayer, freq)) && WRemoteCore.proxy.deactivateRemote(world, entityplayer)) {
-			//}
-		}
-	}*/
 	
 	public boolean getState(ItemStack itemstack) {
 		return getState(itemstack.getItemDamage());
@@ -162,15 +151,15 @@ public class ItemRedstoneWirelessRemote extends Item {
 	}
 
 	public String getName(ItemStack itemstack) {
-		return NBTHelper.getString(itemstack, "devicename", "Wireless Remote");
+		return NBTHelper.getString(itemstack, NBTLib.DEVICE_NAME, ReferenceLib.MOD_NAME);
 	}
 	
 	public Object getFreq(ItemStack itemstack, World world) {
-		return NBTHelper.getString(itemstack, "devicefreq", "0");
+		return NBTHelper.getString(itemstack, NBTLib.DEVICE_FREQUENCY, "0");
 	}
 
 	public void setFreq(ItemStack itemstack, Object freq) {
-		NBTHelper.setString(itemstack, "devicefreq", freq.toString());
+		NBTHelper.setString(itemstack, NBTLib.DEVICE_FREQUENCY, freq.toString());
 	}
 	
 	public void setState(ItemStack itemstack, boolean state) {

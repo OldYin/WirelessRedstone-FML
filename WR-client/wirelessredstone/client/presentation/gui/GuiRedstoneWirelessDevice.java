@@ -141,7 +141,7 @@ public abstract class GuiRedstoneWirelessDevice extends GuiRedstoneWireless {
 				
 			if (oldFreq != freq) {
 				int newFreq = freq - oldFreq;
-				this.setFreq(freq);
+				//this.setFreq(freq);
 				//System.out.println("New Freq: " + newFreq);
 				PacketWirelessDevice packet = new PacketWirelessDevice(world, this.wirelessDevice);
 				packet.setFreq(newFreq);
@@ -173,7 +173,7 @@ public abstract class GuiRedstoneWirelessDevice extends GuiRedstoneWireless {
 	}
 
 	@Override
-	protected void setFreq(Object freq) {
+	public void setFreq(Object freq) {
 		this.wirelessDevice.setFreq(freq.toString());
 	}
 }

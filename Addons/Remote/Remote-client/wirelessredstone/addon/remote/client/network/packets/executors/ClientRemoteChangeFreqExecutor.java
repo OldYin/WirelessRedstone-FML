@@ -31,10 +31,8 @@ public class ClientRemoteChangeFreqExecutor implements IDevicePacketExecutor {
 			PacketWirelessDevice packet = (PacketWirelessDevice)p;
 			Gui currentScreen = ModLoader.getMinecraftInstance().currentScreen;
 			if (currentScreen instanceof GuiRedstoneWirelessDevice) {
-				IWirelessDevice device = new WirelessRemoteDevice(world, entityplayer, entityplayer.getHeldItem());
-				device.setFreq(p.getFreq());
 				GuiRedstoneWirelessDevice gui = (GuiRedstoneWirelessDevice) currentScreen;
-				gui.assWirelessDevice(device, entityplayer);
+				gui.setFreq(p.getFreq());
 				gui.refreshGui();
 			}
 		}
