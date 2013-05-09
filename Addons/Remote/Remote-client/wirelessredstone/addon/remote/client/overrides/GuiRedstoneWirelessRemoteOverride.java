@@ -13,6 +13,7 @@ package wirelessredstone.addon.remote.client.overrides;
 
 import net.minecraft.src.ModLoader;
 import net.minecraft.world.World;
+import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
 import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
 import wirelessredstone.api.IGuiRedstoneWirelessDeviceOverride;
 import wirelessredstone.api.IWirelessDevice;
@@ -26,20 +27,19 @@ public class GuiRedstoneWirelessRemoteOverride implements
 	@Override
 	public boolean beforeFrequencyChange(IWirelessDevice device,
 			Object oldFreq, Object newFreq) {
-		/*if (data instanceof WirelessRemoteData) {
+/*		if (device instanceof WirelessRemoteDevice) {
 			World world = ModLoader.getMinecraftInstance().theWorld;
 			if (world.isRemote) {
 				int OLD = Integer.parseInt(oldFreq.toString());
 				int NEW = Integer.parseInt(newFreq.toString());
-				Object PacketWirelessDevice;
 				if (OLD != NEW) {
-					//PacketWirelessDevice packet = new PacketWirelessDevice(data);
-					//packet.setFreq(Integer.toString(NEW - OLD));
-					//packet.setCommand(PacketRemoteCommands.remoteCommands.changeFreq.toString());
-					//ClientPacketHandler.sendPacket(packet.getPacket());
+					PacketWirelessDevice packet = new PacketWirelessDevice(world, device);
+					packet.setFreq(Integer.toString(NEW - OLD));
+					packet.setCommand(PacketRemoteCommands.remoteCommands.changeFreq.toString());
+					ClientPacketHandler.sendPacket(packet.getPacket());
 				}
 			}
 		}*/
-		return true;
+		return false;
 	}
 }

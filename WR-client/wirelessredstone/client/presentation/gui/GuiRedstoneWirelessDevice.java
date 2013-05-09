@@ -140,9 +140,12 @@ public abstract class GuiRedstoneWirelessDevice extends GuiRedstoneWireless {
 				return;
 				
 			if (oldFreq != freq) {
-				PacketWirelessDevice packet = new PacketWirelessDevice();
+				int newFreq = freq - oldFreq;
+				this.setFreq(freq);
+				//System.out.println("New Freq: " + newFreq);
+				PacketWirelessDevice packet = new PacketWirelessDevice(world, this.wirelessDevice);
+				packet.setFreq(newFreq);
 				packet.setCommand(this.getCommand());
-				packet.setFreq(freq - oldFreq);
 				ClientPacketHandler.sendPacket(packet.getPacket());
 			}
 		} catch (Exception e) {
@@ -170,7 +173,7 @@ public abstract class GuiRedstoneWirelessDevice extends GuiRedstoneWireless {
 	}
 
 	@Override
-	protected void setFreq(String freq) {
-		this.wirelessDevice.setFreq(freq);
+	protected void setFreq(Object freq) {
+		this.wirelessDevice.setFreq(freq.toString());
 	}
 }

@@ -12,8 +12,15 @@
 package wirelessredstone.addon.remote.network.packets.executor;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
+import wirelessredstone.addon.remote.items.ItemRedstoneWirelessRemote;
+import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
 import wirelessredstone.api.IDevicePacketExecutor;
+import wirelessredstone.api.IWirelessDevice;
+import wirelessredstone.network.ServerPacketHandler;
 import wirelessredstone.network.packets.PacketWireless;
 import wirelessredstone.network.packets.PacketWirelessDevice;
 
@@ -23,13 +30,16 @@ public class RemoteChangeFreqExecutor implements IDevicePacketExecutor {
 	public void execute(PacketWireless p, World world, EntityPlayer entityplayer) {
 		if (p instanceof PacketWirelessDevice) {
 			PacketWirelessDevice packet = (PacketWirelessDevice) p;
-			//IWirelessDeviceData data = packet.getDeviceData(world, entityplayer);
-			int freq = Integer.parseInt(packet.getDeviceFreq());
-			//int oldFreq = Integer.parseInt(data.getDeviceFreq());
-			//data.setDeviceFreq(Integer.toString(oldFreq + freq));
-			//PacketWirelessDevice remotePacket = new PacketWirelessDevice(data);
-			//remotePacket.setCommand(PacketRemoteCommands.remoteCommands.changeFreq.toString());
-			//ServerPacketHandler.broadcastPacket(remotePacket.getPacket());
+			ItemStack itemstack= entityplayer.getHeldItem();
+			if (itemstack != null && itemstack.getItem() instanceof ItemRedstoneWirelessRemote) {
+				ItemRedstoneWirelessRemote remote = (ItemRedstoneWirelessRemote) itemstack.getItem();
+				int freq = Integer.parseInt(packet.getDeviceFreq());
+				int oldFreq = Integer.parseInt(remote.getFreq(itemstack, world).toString());
+				remote.setFreq(itemstack, Integer.toString(oldFreq + freq));
+				//PacketWirelessDevice remotePacket = new PacketWirelessDevice(world, device);
+				//remotePacket.setCommand(PacketRemoteCommands.remoteCommands.changeFreq.toString());
+				//ServerPacketHandler.sendPacketTo((EntityPlayerMP) entityplayer, remotePacket.getPacket());
+			}
 		}
 	}
 }

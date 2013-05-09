@@ -62,7 +62,7 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 	
 	@Override
 	public void init() {
-		TickRegistry.registerTickHandler(new ClientTickHandler(), Side.CLIENT);
+		//TickRegistry.registerTickHandler(new ClientTickHandler(), Side.CLIENT);
 		initGUIs();
 		super.init();
 	}
@@ -172,6 +172,7 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 		if (!world.isRemote) {
 			super.activateRemote(world, entityliving);
 		}
+		WirelessRemoteDevice.activatePlayerWirelessRemote(world, entityliving);
 	}
 
 	@Override

@@ -16,6 +16,7 @@ package wirelessredstone.addon.remote.items;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -28,8 +29,11 @@ import net.minecraft.world.World;
 import wirelessredstone.addon.remote.core.WRemoteCore;
 import wirelessredstone.addon.remote.core.WirelessRemote;
 import wirelessredstone.addon.remote.core.lib.IconLib;
+import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
+import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
 import wirelessredstone.client.network.handlers.ClientRedstoneEtherPacketHandler;
 import wirelessredstone.core.lib.GuiLib;
+import wirelessredstone.core.lib.NBTHelper;
 import wirelessredstone.tileentity.TileEntityRedstoneWirelessR;
 
 public class ItemRedstoneWirelessRemote extends Item {
@@ -43,6 +47,11 @@ public class ItemRedstoneWirelessRemote extends Item {
 		iconList[1] = iconRegister.registerIcon(IconLib.WIRELESS_REMOTE_ON);
 	}
 
+	@Override
+	public boolean getShareTag() {
+		return true;
+	}
+
 	public ItemRedstoneWirelessRemote(int i) {
 		super(i);
 		this.setNoRepair();
@@ -53,7 +62,7 @@ public class ItemRedstoneWirelessRemote extends Item {
 	@Override
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer,
 			World world, int i, int j, int k, int l, float a, float b, float c) {
-		return onItemUseFirst(itemstack, entityplayer, world, i, j, k, l, a, b, c);
+		return true;
 	}
 
 	@Override
@@ -67,11 +76,11 @@ public class ItemRedstoneWirelessRemote extends Item {
 				if (tileentity instanceof TileEntityRedstoneWirelessR) {
 					if (world.isRemote) {
 						ClientRedstoneEtherPacketHandler.sendRedstoneEtherPacket(
-								"updateReceiver",
+								PacketRemoteCommands.remoteCommands.updateReceiver.toString(),
 								((TileEntityRedstoneWirelessR)tileentity).getBlockCoord(0), 
 								((TileEntityRedstoneWirelessR)tileentity).getBlockCoord(1),
 								((TileEntityRedstoneWirelessR)tileentity).getBlockCoord(2), 
-								0, 
+								this.getFreq(itemstack, world), 
 								false
 						);
 					}
@@ -79,7 +88,7 @@ public class ItemRedstoneWirelessRemote extends Item {
 				}
 			}
 			entityplayer.openGui(WirelessRemote.instance, GuiLib.GUIID_DEVICE, world, i, j, k);
-			return false;
+			return true;
 		}
 		this.onItemRightClick(itemstack, world, entityplayer);
 		return false;
@@ -89,9 +98,15 @@ public class ItemRedstoneWirelessRemote extends Item {
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
 		if (!entityplayer.isSneaking()) {
+			//this.setState(itemstack, true);
 			entityplayer.setItemInUse(itemstack, 72000);
-			System.out.println(this.getFreq(itemstack, world));
+			entityplayer.setEating(false);
 			//WRemoteCore.proxy.activateRemote(world, entityplayer);
+			String side = world != null ? !world.isRemote ? "Server" : "Client" : "Null";
+			System.out.println("Freq: " + this.getFreq(itemstack, world) + " | Side: " + side);
+			if (!world.isRemote) {
+				WirelessRemoteDevice.activateWirelessRemote(world, entityplayer);
+			}
 		} else {
 			onItemUseFirst(itemstack, entityplayer, world,
 					(int) Math.round(entityplayer.posX),
@@ -100,9 +115,16 @@ public class ItemRedstoneWirelessRemote extends Item {
 		}
 		return itemstack;
 	}
+
+	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+		return 72000;
+	}
 	
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {
-		
+		System.out.println("Stopped Using : " + par2World != null ? !par2World.isRemote ? "Server" : "Client" : "Null");
+		WirelessRemoteDevice.deactivatePlayerWirelessRemote(par2World, par3EntityPlayer);
+		//WRemoteCore.proxy.deactivateRemote(par2World, par3EntityPlayer);
+		//this.setState(par1ItemStack, false);
 	}
 
 	@Override
@@ -112,10 +134,7 @@ public class ItemRedstoneWirelessRemote extends Item {
 
 	@Override
 	public Icon getIconFromDamage(int i) {
-		//String index = this.getUnlocalizedName() + "[" + i + "]";
-		//WirelessRemoteData data = (WirelessRemoteData) WRCore.proxy
-		//		.getWorld().loadItemData(WirelessRemoteData.class, index);
-		if (!getState(i))
+		if (!this.getState(i))
 			return iconList[0];
 		return iconList[1];
 	}
@@ -128,9 +147,9 @@ public class ItemRedstoneWirelessRemote extends Item {
 		
 			//WirelessRemoteData data = (WirelessRemoteData) WirelessDeviceData.getDeviceData(WirelessRemoteData.class, "Wireless Remote", itemstack,
 			//		world, entityplayer);
-			String freq = String.valueOf(this.getFreq(itemstack, world));//data.getDeviceFreq();
-			if (!isHeld || (!WRemoteCore.proxy.isRemoteOn(world, entityplayer, freq) && !WRemoteCore.proxy.deactivateRemote(world, entityplayer))) {
-			}
+			//String freq = String.valueOf(this.getFreq(itemstack, world));//data.getDeviceFreq();
+			//if ((!isHeld || !WRemoteCore.proxy.isRemoteOn(world, entityplayer, freq)) && WRemoteCore.proxy.deactivateRemote(world, entityplayer)) {
+			//}
 		}
 	}*/
 	
@@ -142,60 +161,24 @@ public class ItemRedstoneWirelessRemote extends Item {
 		return i > 0;
 	}
 
-	public NBTTagList getTagList(ItemStack itemstack) {
-		return itemstack.stackTagCompound != null
-				&& itemstack.stackTagCompound.hasKey("RemoteData") ? (NBTTagList) itemstack.stackTagCompound
-				.getTag("RemoteData") : new NBTTagList();
-	}
-	
-	public NBTTagCompound getTagCompound(ItemStack itemstack) {
-		return itemstack.stackTagCompound != null
-			&& itemstack.stackTagCompound.hasKey("RemoteData") ?
-			(NBTTagCompound)itemstack.stackTagCompound.getCompoundTag("RemoteData") : new NBTTagCompound("RemoteData");
+	public String getName(ItemStack itemstack) {
+		return NBTHelper.getString(itemstack, "devicename", "Wireless Remote");
 	}
 	
 	public Object getFreq(ItemStack itemstack, World world) {
-		NBTTagCompound nbttagcompound = this.getTagCompound(itemstack);
-		if (!nbttagcompound.hasNoTags()) {
-			 return nbttagcompound.getString("devicefreq");
-		}
-		return "0";
-	}
-
-	public void setItemData(ItemStack par1ItemStack,
-			World world,
-			String name,
-			Object freq,
-			boolean state) {
-		
+		return NBTHelper.getString(itemstack, "devicefreq", "0");
 	}
 
 	public void setFreq(ItemStack itemstack, Object freq) {
-		NBTTagCompound nbttagcompound = this.getTagCompound(itemstack);
-		String currentfreq = "";
-		if (!nbttagcompound.hasNoTags()) {
-			 currentfreq = nbttagcompound.getString("devicefreq");
-		}
-		if (currentfreq.equals(freq.toString())) {
-			nbttagcompound.setString("devicefreq", freq.toString());
-		}
-		itemstack.getTagCompound().setTag("RemoteData", nbttagcompound);
+		NBTHelper.setString(itemstack, "devicefreq", freq.toString());
 	}
 	
-	public void setState(ItemStack item, boolean state) {
-		item.setItemDamage(state ? 1 : 0);
+	public void setState(ItemStack itemstack, boolean state) {
+		this.setItemDamageForStack(itemstack, state ? 1 : 0);
 	}
-
-	@Override
-	public void onCreated(ItemStack itemstack, World world,
-			EntityPlayer entityplayer) {
-		this.setItemData(itemstack, world, "Wireless Remote", "0", false);
-		//itemstack.setItemDamage(world.getUniqueDataId(this.getUnlocalizedName()));
-		//WirelessRemoteData data = (WirelessRemoteData)WirelessDeviceData.getDeviceData(WirelessRemoteData.class, "Wireless Remote", itemstack, world, entityplayer);
-	}
-
+	
 	@Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-		return EnumAction.bow;
+		return EnumAction.none;
 	}
 }

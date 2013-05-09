@@ -15,7 +15,9 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.src.ModLoader;
 import net.minecraft.world.World;
+import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
 import wirelessredstone.api.IDevicePacketExecutor;
+import wirelessredstone.api.IWirelessDevice;
 import wirelessredstone.api.IWirelessDeviceData;
 import wirelessredstone.client.presentation.gui.GuiRedstoneWirelessDevice;
 import wirelessredstone.network.packets.PacketWireless;
@@ -29,7 +31,10 @@ public class ClientRemoteChangeFreqExecutor implements IDevicePacketExecutor {
 			PacketWirelessDevice packet = (PacketWirelessDevice)p;
 			Gui currentScreen = ModLoader.getMinecraftInstance().currentScreen;
 			if (currentScreen instanceof GuiRedstoneWirelessDevice) {
+				IWirelessDevice device = new WirelessRemoteDevice(world, entityplayer, entityplayer.getHeldItem());
+				device.setFreq(p.getFreq());
 				GuiRedstoneWirelessDevice gui = (GuiRedstoneWirelessDevice) currentScreen;
+				gui.assWirelessDevice(device, entityplayer);
 				gui.refreshGui();
 			}
 		}

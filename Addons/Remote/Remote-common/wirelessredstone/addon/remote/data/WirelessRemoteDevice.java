@@ -86,6 +86,9 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 
 	@Override
 	public String getName() {
+		if (this.item.getItem() instanceof ItemRedstoneWirelessRemote) {
+			return ((ItemRedstoneWirelessRemote)this.item.getItem()).getName(this.item);
+		}
 		return "Wireless Remote";
 	}
 	
@@ -136,19 +139,17 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	public static boolean deactivatePlayerWirelessRemote(World world, EntityLiving entityliving) {
 		if (entityliving instanceof EntityPlayer) {
 			EntityPlayer entityplayer = (EntityPlayer)entityliving;
-			if (remoteTransmitter == null) {
-				return false;
-			} else {
-				PacketWirelessDevice packet = new PacketWirelessDevice(remoteTransmitter.getName());
-				packet.setDeviceFreq(remoteTransmitter.getFreq());
+			ItemStack itemstack = entityplayer.getHeldItem();
+			if (itemstack.getItem() instanceof ItemRedstoneWirelessRemote) {
+				WirelessRemoteDevice remote = new WirelessRemoteDevice(world, entityplayer, itemstack);
+				PacketWirelessDevice packet = new PacketWirelessDevice(remote.getName());
+				packet.setDeviceFreq(remote.getFreq().toString());
 				packet.setDeviceState(false);
 				packet.setDeviceDimension(world);
-				packet.setPosition(remoteTransmitter.xCoord, remoteTransmitter.yCoord, remoteTransmitter.zCoord, 0);
-				packet.setCommand("deactivateRemote");
+				packet.setPosition(remote.xCoord, remote.yCoord, remote.zCoord, 0);
+				packet.setCommand(PacketRemoteCommands.remoteCommands.deactivate.toString());
 				packet.isForced(true);
 				ClientPacketHandler.sendPacket(packet.getPacket());
-				remoteTransmitter.deactivate(world, entityplayer, false);
-				remoteTransmitter = null;
 				return true;
 			}
 		}
@@ -235,5 +236,24 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	@Override
 	public void setDeviceState(boolean state) {
 		this.setState(state);
+	}
+	
+	@Override
+	public boolean isBeingHeld() {
+		EntityLiving entityliving = this.getOwner();
+		if (entityliving != null) {
+			ItemStack itemstack = entityliving.getHeldItem();
+			if (itemstack != null && this.item != null) {
+				IWirelessDevice comparator = new WirelessRemoteDevice(this.getWorld(), this.getOwner(), itemstack);
+				if (this.item.getItem() instanceof ItemRedstoneWirelessRemote && itemstack.getItem() instanceof ItemRedstoneWirelessRemote) {
+					if (comparator.getFreq().equals(this.getFreq())) {
+						System.out.println("BIG LETTERS");
+						return true;
+					}	
+				}
+			}
+		}
+		System.out.println("small letters");
+		return false;
 	}
 }

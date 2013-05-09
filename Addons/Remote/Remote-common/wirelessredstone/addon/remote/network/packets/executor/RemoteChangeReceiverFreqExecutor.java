@@ -15,6 +15,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import wirelessredstone.addon.remote.core.WRemoteCore;
+import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
+import wirelessredstone.api.IWirelessDevice;
 import wirelessredstone.network.handlers.ServerRedstoneEtherPacketHandler;
 import wirelessredstone.network.packets.PacketWireless;
 import wirelessredstone.network.packets.executor.EtherPacketChangeFreqExecutor;
@@ -30,11 +32,11 @@ public class RemoteChangeReceiverFreqExecutor extends EtherPacketChangeFreqExecu
 	
 			if (entity instanceof TileEntityRedstoneWirelessR) {
 				// Assemble frequencies.
-				//IWirelessDeviceData devicedata = new WirelessDeviceData(world, entityplayer);
+				IWirelessDevice device = new WirelessRemoteDevice(world, entityplayer, entityplayer.getHeldItem());
 				
 
 				// Set the frequency to the tile
-				//((TileEntityRedstoneWirelessR) entity).setFreq(devicedata.getDeviceFreq());
+				((TileEntityRedstoneWirelessR) entity).setFreq(device.getFreq());
 				entity.onInventoryChanged();
 	
 				// Makr the block for update with the world.

@@ -33,7 +33,7 @@ public class PacketWirelessDevice extends PacketWireless implements IWirelessDev
 
 	public PacketWirelessDevice(String name) {
 		this();
-		this.payload = new PacketPayload(2, 0, 3, 2);
+		this.payload = new PacketPayload(2, 0, 2, 2);
 		this.setDeviceName(name);
 	}
 
@@ -77,7 +77,7 @@ public class PacketWirelessDevice extends PacketWireless implements IWirelessDev
 
 /*	@Override
 	public int getDeviceID() {
-		return this.payload.getIntPayload(0);
+Z		return this.payload.getIntPayload(0);
 	}*/
 
 	@Override

@@ -28,8 +28,6 @@ import wirelessredstone.data.WirelessCoordinates;
  */
 public abstract class WirelessDevice implements IWirelessDevice {
 
-	protected Object freq;
-	protected String name;
 	protected int xCoord, yCoord, zCoord;
 	protected EntityLiving owner;
 	protected ItemStack item;
@@ -40,8 +38,6 @@ public abstract class WirelessDevice implements IWirelessDevice {
 		} else {
 			this.item = entity.getHeldItem();
 		}
-		this.freq = "0";
-		this.name = "Wireless Device";
 		this.owner = entity;
 		this.setCoords((int)entity.posX, (int)entity.posY, (int)entity.posZ);
 	}
@@ -119,15 +115,6 @@ public abstract class WirelessDevice implements IWirelessDevice {
 	protected abstract String getDeactivateCommand();
 	
 	@Override
-	public boolean isBeingHeld() {
-		EntityLiving entityliving = this.getOwner();
-		if (entityliving != null) {
-			ItemStack itemstack = entityliving.getHeldItem();
-			if (itemstack != null) {
-				return this.item != null ? itemstack.equals(this.item) ? true : false : false;
-			}
-		}
-		return false;
-	}
+	public abstract boolean isBeingHeld();
 	
 }
