@@ -13,6 +13,7 @@ package wirelessredstone.network.packets;
 
 import net.minecraft.world.World;
 import wirelessredstone.api.IWirelessDeviceData;
+import wirelessredstone.core.lib.PacketLib;
 import wirelessredstone.network.packets.core.PacketIds;
 import wirelessredstone.network.packets.core.PacketPayload;
 
@@ -30,7 +31,7 @@ public class PacketRedstoneWirelessOpenGuiDevice extends PacketWireless implemen
 
 	public PacketRedstoneWirelessOpenGuiDevice(IWirelessDeviceData devicedata) {
 		this();
-		this.setCommand(PacketRedstoneWirelessCommands.wirelessCommands.sendDeviceGui
+		this.setCommand(PacketLib.wirelessCommands.sendDeviceGui
 				.toString());
 		this.payload = new PacketPayload(1, 0, 4, 0);
 		this.setDeviceFreq(devicedata.getDeviceFreq());

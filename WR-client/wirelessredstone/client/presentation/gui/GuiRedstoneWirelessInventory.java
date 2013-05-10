@@ -18,8 +18,8 @@ import net.minecraft.client.gui.GuiButton;
 import wirelessredstone.api.IGuiRedstoneWirelessInventoryOverride;
 import wirelessredstone.api.IGuiRedstoneWirelessOverride;
 import wirelessredstone.client.network.handlers.ClientRedstoneEtherPacketHandler;
+import wirelessredstone.core.lib.PacketLib;
 import wirelessredstone.data.LoggerRedstoneWireless;
-import wirelessredstone.network.packets.PacketRedstoneWirelessCommands;
 import wirelessredstone.tileentity.TileEntityRedstoneWireless;
 
 /**
@@ -153,7 +153,7 @@ public abstract class GuiRedstoneWirelessInventory extends GuiRedstoneWireless {
 				return;
 			
 			ClientRedstoneEtherPacketHandler.sendRedstoneEtherPacket(
-					PacketRedstoneWirelessCommands.wirelessCommands.changeFreq.toString(),
+					PacketLib.wirelessCommands.changeFreq.toString(),
 					inventory.getBlockCoord(0), 
 					inventory.getBlockCoord(1),
 					inventory.getBlockCoord(2), 

@@ -14,6 +14,7 @@ package wirelessredstone.network.packets;
 import net.minecraft.world.World;
 import wirelessredstone.block.BlockRedstoneWireless;
 import wirelessredstone.core.WRCore;
+import wirelessredstone.core.lib.PacketLib;
 import wirelessredstone.data.LoggerRedstoneWireless;
 import wirelessredstone.network.packets.core.PacketIds;
 import wirelessredstone.network.packets.core.PacketPayload;
@@ -45,14 +46,14 @@ public class PacketRedstoneEther extends PacketWireless {
 				entity.getBlockCoord(2),
 				0);
 		if (entity instanceof TileEntityRedstoneWirelessR) {
-			setCommand(PacketRedstoneWirelessCommands.wirelessCommands.addReceiver.toString());
+			setCommand(PacketLib.wirelessCommands.addReceiver.toString());
 			setState(((BlockRedstoneWireless) WRCore.blockWirelessR).getState(
 					world,
 					this.xPosition,
 					this.yPosition,
 					this.zPosition));
 		} else if (entity instanceof TileEntityRedstoneWirelessT) {
-			setCommand(PacketRedstoneWirelessCommands.wirelessCommands.addTransmitter
+			setCommand(PacketLib.wirelessCommands.addTransmitter
 					.toString());
 			setState(((BlockRedstoneWireless) WRCore.blockWirelessT).getState(
 					world,

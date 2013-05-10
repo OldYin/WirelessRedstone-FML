@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import wirelessredstone.api.ICommonProxy;
 import wirelessredstone.api.IWirelessDeviceData;
+import wirelessredstone.core.lib.PacketLib;
 import wirelessredstone.network.ServerPacketHandler;
 import wirelessredstone.network.handlers.ServerAddonPacketHandler;
 import wirelessredstone.network.handlers.ServerDeviceGuiPacketHandler;
@@ -27,7 +28,6 @@ import wirelessredstone.network.handlers.ServerGuiPacketHandler;
 import wirelessredstone.network.handlers.ServerRedstoneEtherPacketHandler;
 import wirelessredstone.network.handlers.ServerTilePacketHandler;
 import wirelessredstone.network.handlers.ServerWirelessDevicePacketHandler;
-import wirelessredstone.network.packets.PacketRedstoneWirelessCommands;
 import wirelessredstone.network.packets.core.PacketIds;
 import wirelessredstone.network.packets.executor.EtherPacketChangeFreqExecutor;
 import wirelessredstone.network.packets.executor.EtherPacketFetchEtherExecutor;
@@ -115,25 +115,25 @@ public class WRCommonProxy implements ICommonProxy {
 		ServerRedstoneEtherPacketHandler etherPacketHandler = new ServerRedstoneEtherPacketHandler();
 		// Executors
 		etherPacketHandler.registerPacketHandler(
-				PacketRedstoneWirelessCommands.wirelessCommands.changeFreq.toString(),
+				PacketLib.wirelessCommands.changeFreq.toString(),
 				new EtherPacketChangeFreqExecutor());
 		etherPacketHandler.registerPacketHandler(
-				PacketRedstoneWirelessCommands.wirelessCommands.addTransmitter.toString(),
+				PacketLib.wirelessCommands.addTransmitter.toString(),
 				new EtherPacketTXAddExecutor());
 		etherPacketHandler.registerPacketHandler(
-				PacketRedstoneWirelessCommands.wirelessCommands.setTransmitterState.toString(),
+				PacketLib.wirelessCommands.setTransmitterState.toString(),
 				new EtherPacketTXSetStateExecutor());
 		etherPacketHandler.registerPacketHandler(
-				PacketRedstoneWirelessCommands.wirelessCommands.remTransmitter.toString(),
+				PacketLib.wirelessCommands.remTransmitter.toString(),
 				new EtherPacketTXRemExecutor());
 		etherPacketHandler.registerPacketHandler(
-				PacketRedstoneWirelessCommands.wirelessCommands.addReceiver.toString(),
+				PacketLib.wirelessCommands.addReceiver.toString(),
 				new EtherPacketRXAddExecutor());
 		etherPacketHandler.registerPacketHandler(
-				PacketRedstoneWirelessCommands.wirelessCommands.remReceiver.toString(),
+				PacketLib.wirelessCommands.remReceiver.toString(),
 				new EtherPacketRXRemExecutor());
 		etherPacketHandler.registerPacketHandler(
-				PacketRedstoneWirelessCommands.wirelessCommands.fetchEther.toString(),
+				PacketLib.wirelessCommands.fetchEther.toString(),
 				new EtherPacketFetchEtherExecutor());
 		ServerPacketHandler.registerPacketHandler(
 				PacketIds.ETHER,

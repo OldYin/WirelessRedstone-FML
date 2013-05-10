@@ -18,9 +18,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import wirelessredstone.client.presentation.gui.GuiRedstoneWireless;
 import wirelessredstone.client.presentation.gui.GuiRedstoneWirelessInventory;
+import wirelessredstone.core.lib.PacketLib;
 import wirelessredstone.data.LoggerRedstoneWireless;
 import wirelessredstone.network.handlers.SubPacketHandler;
-import wirelessredstone.network.packets.PacketRedstoneWirelessCommands;
 import wirelessredstone.network.packets.PacketWireless;
 import wirelessredstone.network.packets.PacketWirelessTile;
 import wirelessredstone.tileentity.TileEntityRedstoneWireless;
@@ -43,7 +43,7 @@ public class ClientTilePacketHandler extends SubPacketHandler {
 		);
 		
 		TileEntity tileentity = packet.getTarget(world);
-		if (packet.getCommand().equals(PacketRedstoneWirelessCommands.wirelessCommands.fetchTile.toString())) {
+		if (packet.getCommand().equals(PacketLib.wirelessCommands.fetchTile.toString())) {
 			handleFetchTile(packet,tileentity);
 		}
 	}

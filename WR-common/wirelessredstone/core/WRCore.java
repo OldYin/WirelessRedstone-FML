@@ -23,9 +23,9 @@ import wirelessredstone.api.ICommonProxy;
 import wirelessredstone.block.BlockRedstoneWireless;
 import wirelessredstone.block.BlockRedstoneWirelessR;
 import wirelessredstone.block.BlockRedstoneWirelessT;
+import wirelessredstone.core.lib.PacketLib;
 import wirelessredstone.data.ConfigStoreRedstoneWireless;
 import wirelessredstone.data.LoggerRedstoneWireless;
-import wirelessredstone.network.packets.PacketRedstoneWirelessCommands;
 import wirelessredstone.tileentity.TileEntityRedstoneWireless;
 import wirelessredstone.tileentity.TileEntityRedstoneWirelessR;
 import wirelessredstone.tileentity.TileEntityRedstoneWirelessT;
@@ -93,7 +93,7 @@ public class WRCore {
 
 		proxy.init();
 
-		PacketRedstoneWirelessCommands.registerCommands();
+		PacketLib.registerCommands();
 
 		//PacketWirelessDeviceCommands.registerCommands();
 

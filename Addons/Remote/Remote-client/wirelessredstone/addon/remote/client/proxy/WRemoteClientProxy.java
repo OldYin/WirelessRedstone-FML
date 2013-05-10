@@ -39,8 +39,8 @@ import wirelessredstone.api.IWirelessDevice;
 import wirelessredstone.api.IWirelessDeviceData;
 import wirelessredstone.client.network.ClientPacketHandler;
 import wirelessredstone.client.proxy.WRClientProxy;
+import wirelessredstone.core.lib.PacketLib;
 import wirelessredstone.network.packets.PacketRedstoneEther;
-import wirelessredstone.network.packets.PacketRedstoneWirelessCommands;
 import wirelessredstone.network.packets.core.PacketIds;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -146,7 +146,7 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 	public void login(NetHandler handler, INetworkManager manager, Packet1Login login) {
 		World world = getWorld(handler);
 		if (world != null) {
-			ClientPacketHandler.sendPacket(((new PacketRedstoneEther(PacketRedstoneWirelessCommands.wirelessCommands.fetchEther.toString())).getPacket()));
+			ClientPacketHandler.sendPacket(((new PacketRedstoneEther(PacketLib.wirelessCommands.fetchEther.toString())).getPacket()));
 		}
 	}
 	

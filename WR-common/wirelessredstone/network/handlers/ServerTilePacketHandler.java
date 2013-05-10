@@ -12,9 +12,9 @@
 package wirelessredstone.network.handlers;
 
 import net.minecraft.world.World;
+import wirelessredstone.core.lib.PacketLib;
 import wirelessredstone.data.LoggerRedstoneWireless;
 import wirelessredstone.network.ServerPacketHandler;
-import wirelessredstone.network.packets.PacketRedstoneWirelessCommands;
 import wirelessredstone.network.packets.PacketWireless;
 import wirelessredstone.network.packets.PacketWirelessTile;
 import wirelessredstone.tileentity.TileEntityRedstoneWireless;
@@ -48,7 +48,7 @@ public class ServerTilePacketHandler extends SubPacketHandler {
 		
 		// Assemble packet.
 		PacketWirelessTile packet = new PacketWirelessTile(
-				PacketRedstoneWirelessCommands.wirelessCommands.fetchTile.toString(),
+				PacketLib.wirelessCommands.fetchTile.toString(),
 					tileentity);
 		
 		// Broadcast packet.

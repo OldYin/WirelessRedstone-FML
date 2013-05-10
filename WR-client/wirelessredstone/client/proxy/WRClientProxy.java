@@ -46,10 +46,10 @@ import wirelessredstone.client.presentation.gui.GuiRedstoneWirelessR;
 import wirelessredstone.client.presentation.gui.GuiRedstoneWirelessT;
 import wirelessredstone.core.WRCore;
 import wirelessredstone.core.WirelessRedstone;
+import wirelessredstone.core.lib.PacketLib;
 import wirelessredstone.data.LoggerRedstoneWireless;
 import wirelessredstone.ether.RedstoneEther;
 import wirelessredstone.network.packets.PacketRedstoneEther;
-import wirelessredstone.network.packets.PacketRedstoneWirelessCommands;
 import wirelessredstone.network.packets.core.PacketIds;
 import wirelessredstone.proxy.WRCommonProxy;
 import wirelessredstone.tileentity.TileEntityRedstoneWireless;
@@ -251,7 +251,7 @@ public class WRClientProxy extends WRCommonProxy {
 	public void login(NetHandler handler, INetworkManager manager, Packet1Login login) {
 		World world = getWorld(handler);
 		if (world != null) {
-			ClientPacketHandler.sendPacket(((new PacketRedstoneEther(PacketRedstoneWirelessCommands.wirelessCommands.fetchEther.toString())).getPacket()));
+			ClientPacketHandler.sendPacket(((new PacketRedstoneEther(PacketLib.wirelessCommands.fetchEther.toString())).getPacket()));
 		}
 	}
 	
@@ -265,10 +265,10 @@ public class WRClientProxy extends WRCommonProxy {
 		// Ether Packets
 		ClientRedstoneEtherPacketHandler etherPacketHandler = new ClientRedstoneEtherPacketHandler();
 		etherPacketHandler.registerPacketHandler(
-				PacketRedstoneWirelessCommands.wirelessCommands.addTransmitter.toString(),
+				PacketLib.wirelessCommands.addTransmitter.toString(),
 				new ClientEtherPacketTXAddExecutor());
 		etherPacketHandler.registerPacketHandler(
-				PacketRedstoneWirelessCommands.wirelessCommands.addReceiver.toString(),
+				PacketLib.wirelessCommands.addReceiver.toString(),
 				new ClientEtherPacketRXAddExecutor());
 		ClientPacketHandler.registerPacketHandler(
 				PacketIds.ETHER,

@@ -12,6 +12,7 @@
 package wirelessredstone.network.packets;
 
 import net.minecraft.world.World;
+import wirelessredstone.core.lib.PacketLib;
 import wirelessredstone.network.packets.core.PacketIds;
 import wirelessredstone.network.packets.core.PacketPayload;
 import wirelessredstone.tileentity.TileEntityRedstoneWireless;
@@ -32,7 +33,7 @@ public class PacketRedstoneWirelessOpenGuiInventory extends PacketWireless {
 
 	public PacketRedstoneWirelessOpenGuiInventory(TileEntityRedstoneWireless entity) {
 		this();
-		this.setCommand(PacketRedstoneWirelessCommands.wirelessCommands.sendGui
+		this.setCommand(PacketLib.wirelessCommands.sendGui
 				.toString());
 		this.setPosition(
 				entity.getBlockCoord(0),

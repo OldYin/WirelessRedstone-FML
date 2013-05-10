@@ -25,8 +25,8 @@ import wirelessredstone.api.IBlockRedstoneWirelessOverride;
 import wirelessredstone.api.IRedstoneWirelessData;
 import wirelessredstone.api.ITileEntityRedstoneWirelessOverride;
 import wirelessredstone.block.BlockRedstoneWireless;
+import wirelessredstone.core.lib.PacketLib;
 import wirelessredstone.data.LoggerRedstoneWireless;
-import wirelessredstone.network.packets.PacketRedstoneWirelessCommands;
 import wirelessredstone.network.packets.PacketWirelessTile;
 
 public abstract class TileEntityRedstoneWireless extends TileEntity implements IInventory {
@@ -404,7 +404,7 @@ public abstract class TileEntityRedstoneWireless extends TileEntity implements I
 
 	private Packet getUpdatePacket() {
 		return new PacketWirelessTile(
-				PacketRedstoneWirelessCommands.wirelessCommands.fetchTile.toString(),
+				PacketLib.wirelessCommands.fetchTile.toString(),
 					this).getPacket();
 	}
 
