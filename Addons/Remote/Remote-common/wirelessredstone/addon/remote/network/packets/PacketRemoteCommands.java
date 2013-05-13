@@ -20,7 +20,8 @@ public class PacketRemoteCommands {
 		deactivate,
 		changeFreq,
 		updateReceiver,
-		openGui;
+		openGui,
+		updateRemote;
 	
 		private int value;
 		private String name;
@@ -57,6 +58,9 @@ public class PacketRemoteCommands {
 		remoteCommands.openGui.value = 4;
 		remoteCommands.openGui.name = "openRemoteGui";
 		registerCommand(remoteCommands.openGui.name);
+		remoteCommands.updateRemote.value = 5;
+		remoteCommands.updateRemote.name = "updateRemote";
+		registerCommand(remoteCommands.updateRemote.name);
 	}
 
 	public static String commandToString(int command) {

@@ -136,7 +136,7 @@ public class WRemoteCommonProxy implements IRemoteCommonProxy {
 	public boolean isRemoteOn(World world, EntityPlayer entityplayer, String freq) {
 		if (WirelessRemoteDevice.remoteTransmitters.containsKey(entityplayer)) {
 			IWirelessDevice remote = WirelessRemoteDevice.remoteTransmitters.get(entityplayer);
-			return remote.getFreq() == freq;
+			return remote.getFreq().equals(freq);
 		}
 		return false;
 	}

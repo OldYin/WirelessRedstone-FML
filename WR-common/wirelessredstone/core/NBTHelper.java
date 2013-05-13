@@ -1,9 +1,45 @@
 package wirelessredstone.core;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class NBTHelper {
+
+	/**
+	 * Writes a compressed NBTTagCompound to the OutputStream
+	 */
+	public static void writeNBTTagCompound(
+			NBTTagCompound nbttagcompound,
+			DataOutputStream data) throws IOException {
+		if (nbttagcompound == null) {
+			data.writeShort(-1);
+		} else {
+			byte[] bytes = CompressedStreamTools.compress(nbttagcompound);
+			data.writeShort((short) bytes.length);
+			data.write(bytes);
+		}
+	}
+
+	/**
+	 * Reads a compressed NBTTagCompound from the InputStream
+	 */
+	public static NBTTagCompound readNBTTagCompound(
+			DataInputStream data) throws IOException {
+		short nbtSize = data.readShort();
+
+		if (nbtSize < 0) {
+			return null;
+		} else {
+			byte[] bytes = new byte[nbtSize];
+			data.readFully(bytes);
+			return CompressedStreamTools.decompress(bytes);
+		}
+	}
     /**
      * Initializes the NBT Tag Compound for the given ItemStack if it is null
      * 

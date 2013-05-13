@@ -55,9 +55,10 @@ public class ItemRedstoneWirelessRemote extends Item {
 
 	public ItemRedstoneWirelessRemote(int i) {
 		super(i);
+		//this.setMaxDamage(1);
 		this.setNoRepair();
 		this.setCreativeTab(CreativeTabs.tabRedstone);
-		maxStackSize = 1;
+		this.setMaxStackSize(1);
 	}
 	
 	@Override
@@ -96,11 +97,11 @@ public class ItemRedstoneWirelessRemote extends Item {
 			EntityPlayer entityplayer) {
 		if (!entityplayer.isSneaking()) {
 			//entityplayer.setItemInUse(itemstack, 72000);
-			String side = world != null ? !world.isRemote ? "Server" : "Client" : "Null";
-			System.out.println("Freq: " + this.getFreq(itemstack, world) + " | Side: " + side);
-			if (!world.isRemote) {
-				WirelessRemoteDevice.activateWirelessRemote(world, entityplayer);
-			}
+			//String side = world != null ? !world.isRemote ? "Server" : "Client" : "Null";
+			//System.out.println("Freq: " + this.getFreq(itemstack, world) + " | Side: " + side);
+			//if (!world.isRemote) {
+			WRemoteCore.proxy.activateRemote(world, entityplayer);
+			//}
 		} else {
 			onItemUseFirst(itemstack, entityplayer, world,
 					(int) Math.round(entityplayer.posX),
@@ -110,9 +111,9 @@ public class ItemRedstoneWirelessRemote extends Item {
 		return itemstack;
 	}
 
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+/*	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
 		return 72000;
-	}
+	}*/
 	
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {
 		WirelessRemoteDevice.deactivatePlayerWirelessRemote(par2World, par3EntityPlayer);
@@ -134,20 +135,21 @@ public class ItemRedstoneWirelessRemote extends Item {
 	public boolean isFull3D() {
 		return true;
 	}
+	
+	@Override
+    public Icon getIcon(ItemStack itemstack, int pass) {
+		return this.iconList[this.getState(itemstack) ? 1 : 0];
+	}
 
 	@Override
 	public Icon getIconFromDamage(int i) {
-		if (!this.getState(i))
+		//if (!this.getState(i))
 			return iconList[0];
-		return iconList[1];
+		//return iconList[1];
 	}
 	
 	public boolean getState(ItemStack itemstack) {
-		return getState(itemstack.getItemDamage());
-	}
-	
-	public boolean getState(int i) {
-		return i > 0;
+		return NBTHelper.getBoolean(itemstack, NBTLib.DEVICE_STATE);
 	}
 
 	public String getName(ItemStack itemstack) {
@@ -163,7 +165,7 @@ public class ItemRedstoneWirelessRemote extends Item {
 	}
 	
 	public void setState(ItemStack itemstack, boolean state) {
-		this.setItemDamageForStack(itemstack, state ? 1 : 0);
+		NBTHelper.setBoolean(itemstack, NBTLib.DEVICE_STATE, state);
 	}
 	
 	@Override

@@ -27,13 +27,15 @@ import wirelessredstone.network.packets.core.PacketPayload;
  */
 public class PacketWirelessDevice extends PacketWireless implements IWirelessDeviceData {
 	
+	private IWirelessDevice device;
+	
 	public PacketWirelessDevice() {
 		super(PacketIds.DEVICE);
 	}
 
 	public PacketWirelessDevice(String name) {
 		this();
-		this.payload = new PacketPayload(2, 0, 2, 2);
+		this.payload = new PacketPayload(1, 0, 2, 2);
 		this.setDeviceName(name);
 	}
 
@@ -48,11 +50,6 @@ public class PacketWirelessDevice extends PacketWireless implements IWirelessDev
 		this.setDeviceFreq(wirelessDevice.getFreq());
 		this.setDeviceState(wirelessDevice.getState());
 		this.isForced(false);
-	}
-
-	@Override
-	public void setDeviceDimension(World world) {
-		this.payload.setIntPayload(0, world.provider.dimensionId);
 	}
 
 	@Override
@@ -116,5 +113,10 @@ Z		return this.payload.getIntPayload(0);
 	@Override
 	public boolean targetExists(World world) {
 		return false;
+	}
+
+	@Override
+	public void setDeviceDimension(World world) {
+		this.payload.setIntPayload(1, world.provider.dimensionId);
 	}
 }

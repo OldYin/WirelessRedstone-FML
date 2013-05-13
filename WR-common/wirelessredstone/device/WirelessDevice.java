@@ -115,6 +115,6 @@ public abstract class WirelessDevice implements IWirelessDevice {
 	protected abstract String getDeactivateCommand();
 	
 	@Override
-	public abstract boolean isBeingHeld();
+	public abstract boolean isBeingHeld(World world, EntityLiving entityliving);
 	
 }

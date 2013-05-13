@@ -24,27 +24,33 @@ import org.lwjgl.input.Mouse;
 
 import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
 import wirelessredstone.addon.remote.items.ItemRedstoneWirelessRemote;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
 public class ClientTickHandler implements ITickHandler {
 	
 	public static boolean mouseDown, wasMouseDown, remotePulsing;
-	Minecraft mc = ModLoader.getMinecraftInstance();
+	Minecraft mc = FMLClientHandler.instance().getClient();
 	
 	public static void processRemote(World world, EntityPlayer entityplayer,
 			GuiScreen gui, MovingObjectPosition mop) {
-		if (world.isRemote) {
-			if (WirelessRemoteDevice.remoteTransmitter != null && !mouseDown && !remotePulsing) {
+		if (WirelessRemoteDevice.remoteTransmitter != null) {
+			System.out.println("Remote Transmitter != null");
+			if (!mouseDown) {
 				//ThreadWirelessRemote.pulse(entityplayer, "hold");
+				System.out.println("Deactivating remote!!!!!!!!!");
 				WirelessRemoteDevice.deactivatePlayerWirelessRemote(world, entityplayer);
 			}
-	
-			if (mouseClicked()
-					&& WirelessRemoteDevice.remoteTransmitter == null
-					&& entityplayer.inventory.getCurrentItem() != null
-					&& entityplayer.inventory.getCurrentItem().getItem() instanceof ItemRedstoneWirelessRemote
+		}
+
+		if (mouseClicked()) {
+			System.out.println("Mouse Clicked");
+			if (WirelessRemoteDevice.remoteTransmitter == null
+					&& entityplayer.getHeldItem() != null
+					&& entityplayer.getHeldItem().getItem() instanceof ItemRedstoneWirelessRemote
 					&& !entityplayer.isSneaking()) {
+				System.out.println("Activating remote!!!!!!!");
 				WirelessRemoteDevice.activatePlayerWirelessRemote(world, entityplayer);
 			}
 		}

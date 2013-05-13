@@ -21,7 +21,6 @@ import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.src.ModLoader;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import wirelessredstone.addon.remote.client.network.packets.executors.ClientRemoteChangeFreqExecutor;
 import wirelessredstone.addon.remote.client.overrides.ActivateGuiRemoteOverride;
 import wirelessredstone.addon.remote.client.overrides.GuiRedstoneWirelessRemoteOverride;
@@ -31,12 +30,11 @@ import wirelessredstone.addon.remote.core.WRemoteCore;
 import wirelessredstone.addon.remote.core.WirelessRemote;
 import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
 import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
-import wirelessredstone.addon.remote.network.packets.executor.ActivateRemoteExecutor;
-import wirelessredstone.addon.remote.network.packets.executor.DeactivateRemoteExecutor;
+//import wirelessredstone.addon.remote.network.packets.executor.ActivateRemoteExecutor;
+//import wirelessredstone.addon.remote.network.packets.executor.DeactivateRemoteExecutor;
 import wirelessredstone.addon.remote.proxy.WRemoteCommonProxy;
 import wirelessredstone.api.IGuiRedstoneWirelessDeviceOverride;
 import wirelessredstone.api.IWirelessDevice;
-import wirelessredstone.api.IWirelessDeviceData;
 import wirelessredstone.client.network.ClientPacketHandler;
 import wirelessredstone.client.proxy.WRClientProxy;
 import wirelessredstone.core.lib.PacketLib;
@@ -156,12 +154,12 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 		/////////////////////
 		// Client Handlers //
 		/////////////////////
-		ClientPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(
-				PacketRemoteCommands.remoteCommands.activate.toString(),
-				new ActivateRemoteExecutor());
-		ClientPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(
-				PacketRemoteCommands.remoteCommands.deactivate.toString(),
-				new DeactivateRemoteExecutor());
+		//ClientPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(
+		//		PacketRemoteCommands.remoteCommands.activate.toString(),
+		//		new ActivateRemoteExecutor());
+		//ClientPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(
+		//		PacketRemoteCommands.remoteCommands.deactivate.toString(),
+		//		new DeactivateRemoteExecutor());
 		ClientPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(
 				PacketRemoteCommands.remoteCommands.changeFreq.toString(),
 				new ClientRemoteChangeFreqExecutor());
@@ -172,7 +170,7 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 		if (!world.isRemote) {
 			super.activateRemote(world, entityliving);
 		}
-		WirelessRemoteDevice.activatePlayerWirelessRemote(world, entityliving);
+		//WirelessRemoteDevice.activatePlayerWirelessRemote(world, entityliving);
 	}
 
 	@Override
@@ -189,7 +187,7 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 			return super.isRemoteOn(world, entityplayer, freq);
 		}
 		boolean flag = WirelessRemoteDevice.remoteTransmitter == null ? false
-				: WirelessRemoteDevice.remoteTransmitter.getFreq() == freq;
+				: WirelessRemoteDevice.remoteTransmitter.getFreq().equals(freq);
 		return flag;
 	}
 }

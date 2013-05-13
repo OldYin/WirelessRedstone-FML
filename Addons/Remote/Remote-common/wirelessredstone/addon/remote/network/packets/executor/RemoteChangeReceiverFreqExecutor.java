@@ -12,10 +12,12 @@
 package wirelessredstone.addon.remote.network.packets.executor;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import wirelessredstone.addon.remote.core.WRemoteCore;
 import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
+import wirelessredstone.addon.remote.items.ItemRedstoneWirelessRemote;
 import wirelessredstone.api.IWirelessDevice;
 import wirelessredstone.network.handlers.ServerRedstoneEtherPacketHandler;
 import wirelessredstone.network.packets.PacketWireless;
@@ -26,13 +28,14 @@ public class RemoteChangeReceiverFreqExecutor extends EtherPacketChangeFreqExecu
 
 	@Override
 	public void execute(PacketWireless packet, World world, EntityPlayer entityplayer) {
-		if (entityplayer.getHeldItem().getItemName().equals(WRemoteCore.itemRemote.getUnlocalizedName())) {
+		ItemStack itemstack = entityplayer.getHeldItem();
+		if (itemstack != null && itemstack.getItem() instanceof ItemRedstoneWirelessRemote) {
 			// Fetch the tile from the packet
 			TileEntity entity = packet.getTarget(world);
 	
 			if (entity instanceof TileEntityRedstoneWirelessR) {
 				// Assemble frequencies.
-				IWirelessDevice device = new WirelessRemoteDevice(world, entityplayer, entityplayer.getHeldItem());
+				IWirelessDevice device = new WirelessRemoteDevice(world, entityplayer, itemstack);
 				
 
 				// Set the frequency to the tile

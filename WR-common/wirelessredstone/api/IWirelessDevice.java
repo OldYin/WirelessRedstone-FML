@@ -111,7 +111,7 @@ public interface IWirelessDevice {
 	 * 
 	 * @return true if the device is being held
 	 */
-	boolean isBeingHeld();
+	boolean isBeingHeld(World world, EntityLiving entityliving);
 
 	/**
 	 * Return the name of the device

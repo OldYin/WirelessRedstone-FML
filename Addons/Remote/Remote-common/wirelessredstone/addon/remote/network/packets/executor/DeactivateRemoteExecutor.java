@@ -12,17 +12,27 @@
 package wirelessredstone.addon.remote.network.packets.executor;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import wirelessredstone.addon.remote.data.WirelessRemoteDevice;
 import wirelessredstone.api.IWirelessDevice;
 import wirelessredstone.api.IWirelessDeviceData;
 import wirelessredstone.network.packets.PacketWireless;
+import wirelessredstone.network.packets.PacketWirelessDevice;
 import wirelessredstone.network.packets.executor.DevicePacketDeactivateExecutor;
 
 public class DeactivateRemoteExecutor extends DevicePacketDeactivateExecutor {
+	
+	@Override
+	public void execute(PacketWireless packet, World world, EntityPlayer entityplayer) {
+		IWirelessDevice device = this.getDevice(world, entityplayer, packet);
+		if (device != null) {
+			device.deactivate(world, entityplayer, ((PacketWirelessDevice)packet).isForced());
+		}
+	}
 
 	@Override
 	protected IWirelessDevice getDevice(World world, EntityLiving entityliving, PacketWireless packet) {
-		return new WirelessRemoteDevice(world, entityliving, entityliving.getHeldItem());
+		return WirelessRemoteDevice.getRemoteDeviceForPlayer(entityliving);
 	}
 }
