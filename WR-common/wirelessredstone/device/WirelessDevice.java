@@ -88,22 +88,18 @@ public abstract class WirelessDevice implements IWirelessDevice {
 
 	@Override
 	public void activate(World world, Entity entity) {
-		new Exception().printStackTrace();
-		if (!world.isRemote) {
-			this.setDeviceState(true);
-			this.doActivateCommand();
-		}
+		//new Exception().printStackTrace();
+		this.setDeviceState(true);
+		this.doActivateCommand();
 	}
 
 	public abstract void setDeviceState(boolean state);
 
 	@Override
 	public void deactivate(World world, Entity entity, boolean isForced) {
-		new Exception().printStackTrace();
-		if (!world.isRemote) {
-			this.setDeviceState(false);
-			this.doDeactivateCommand();
-		}
+		//new Exception().printStackTrace();
+		this.setDeviceState(false);
+		this.doDeactivateCommand();
 	}
 	
 	@Override

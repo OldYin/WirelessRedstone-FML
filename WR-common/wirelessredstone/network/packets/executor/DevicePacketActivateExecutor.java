@@ -22,7 +22,6 @@ public abstract class DevicePacketActivateExecutor implements IDevicePacketExecu
 	
 	@Override
 	public void execute(PacketWireless packet, World world, EntityPlayer entityplayer) {
-		System.out.println("I'm activating from packet command");
 		this.getDevice(world, entityplayer, packet).activate(world, entityplayer);
 	}
 

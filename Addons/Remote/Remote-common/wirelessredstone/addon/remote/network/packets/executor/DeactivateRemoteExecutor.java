@@ -22,17 +22,10 @@ import wirelessredstone.network.packets.PacketWirelessDevice;
 import wirelessredstone.network.packets.executor.DevicePacketDeactivateExecutor;
 
 public class DeactivateRemoteExecutor extends DevicePacketDeactivateExecutor {
-	
-	@Override
-	public void execute(PacketWireless packet, World world, EntityPlayer entityplayer) {
-		IWirelessDevice device = this.getDevice(world, entityplayer, packet);
-		if (device != null) {
-			device.deactivate(world, entityplayer, ((PacketWirelessDevice)packet).isForced());
-		}
-	}
 
 	@Override
 	protected IWirelessDevice getDevice(World world, EntityLiving entityliving, PacketWireless packet) {
-		return WirelessRemoteDevice.getRemoteDeviceForPlayer(entityliving);
+		IWirelessDevice device = WirelessRemoteDevice.getRemoteDeviceForPlayer(entityliving);
+		return device;
 	}
 }

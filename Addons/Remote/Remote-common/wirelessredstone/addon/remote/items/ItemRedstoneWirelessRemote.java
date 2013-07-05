@@ -101,7 +101,7 @@ public class ItemRedstoneWirelessRemote extends Item {
 			//String side = world != null ? !world.isRemote ? "Server" : "Client" : "Null";
 			//System.out.println("Freq: " + this.getFreq(itemstack, world) + " | Side: " + side);
 			//if (!world.isRemote) {
-			WRemoteCore.proxy.activateRemote(world, entityplayer);
+			//WRemoteCore.proxy.activateRemote(world, entityplayer);
 			//}
 		} else {
 			onItemUseFirst(itemstack, entityplayer, world,
@@ -117,7 +117,8 @@ public class ItemRedstoneWirelessRemote extends Item {
 	}*/
 	
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {
-		WirelessRemoteDevice.deactivatePlayerWirelessRemote(par2World, par3EntityPlayer);
+		System.out.println(FMLCommonHandler.instance().getSide() + " | " + "playerStoppedUsing");
+		//WirelessRemoteDevice.deactivatePlayerWirelessRemote(par2World, par3EntityPlayer);
 	}
 	
 	@Override
@@ -126,8 +127,8 @@ public class ItemRedstoneWirelessRemote extends Item {
 			EntityPlayer entityplayer = (EntityPlayer) entity;
 			if (itemstack != null && itemstack.getItem() instanceof ItemRedstoneWirelessRemote) {
 				String freq = this.getFreq(itemstack, world).toString();
-				if (!isHeld || (!WRemoteCore.proxy.isRemoteOn(world, entityplayer, freq) && !WRemoteCore.proxy.deactivateRemote(world, entityplayer))) {
-				}
+				//if (!isHeld || (!WRemoteCore.proxy.isRemoteOn(world, entityplayer, freq) && !WRemoteCore.proxy.deactivateRemote(world, entityplayer))) {
+				//}
 			}
 		}
 	}
@@ -145,7 +146,9 @@ public class ItemRedstoneWirelessRemote extends Item {
 	}
 	
 	public boolean getState(ItemStack itemstack) {
-		return NBTHelper.getBoolean(itemstack, NBTLib.DEVICE_STATE);
+		boolean state = NBTHelper.getBoolean(itemstack, NBTLib.DEVICE_STATE); 
+		System.out.println(FMLCommonHandler.instance().getSide() + " | " + itemstack.getTagCompound() + " | "  + state);
+		return state;
 	}
 
 	public String getName(ItemStack itemstack) {
@@ -161,7 +164,6 @@ public class ItemRedstoneWirelessRemote extends Item {
 	}
 	
 	public void setState(ItemStack itemstack, boolean state) {
-		System.out.println(FMLCommonHandler.instance().getSide() + " | " + itemstack.getTagCompound() + " | " + state);
 		NBTHelper.setBoolean(itemstack, NBTLib.DEVICE_STATE, state);
 		System.out.println(FMLCommonHandler.instance().getSide() + " | " + itemstack.getTagCompound() + " | "  + this.getState(itemstack));
 	}

@@ -170,18 +170,12 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 
 	@Override
 	public void activateRemote(World world, EntityLiving entityliving) {
-		if (!world.isRemote) {
-			super.activateRemote(world, entityliving);
-		}
 		//WirelessRemoteDevice.activatePlayerWirelessRemote(world, entityliving);
 	}
 
 	@Override
 	public boolean deactivateRemote(World world, EntityLiving entityliving) {
-		if (!world.isRemote) {
-			return super.deactivateRemote(world, entityliving);
-		}
-		return WirelessRemoteDevice.deactivatePlayerWirelessRemote(world, entityliving);
+		return false;//WirelessRemoteDevice.deactivatePlayerWirelessRemote(world, entityliving);
 	}	
 	
 	@Override

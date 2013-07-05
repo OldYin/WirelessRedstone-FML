@@ -22,6 +22,8 @@ public class ActivateRemoteExecutor extends DevicePacketActivateExecutor {
 
 	@Override
 	protected IWirelessDevice getDevice(World world, EntityLiving entityliving, PacketWireless packet) {
-		return new WirelessRemoteDevice(world, entityliving, entityliving.getHeldItem());
+		IWirelessDevice device = new WirelessRemoteDevice(world, entityliving, entityliving.getHeldItem());
+		WirelessRemoteDevice.remoteTransmitters.put(entityliving, device);
+		return device;
 	}
 }

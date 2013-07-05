@@ -98,11 +98,11 @@ public class WRemoteCommonProxy implements IRemoteCommonProxy {
 		// Server Executor //
 		/////////////////////
 		ServerPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(
-				PacketRemoteCommands.remoteCommands.deactivate.toString(),
-				new DeactivateRemoteExecutor());
-		ServerPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(
 				PacketRemoteCommands.remoteCommands.activate.toString(),
 				new ActivateRemoteExecutor());
+		ServerPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(
+				PacketRemoteCommands.remoteCommands.deactivate.toString(),
+				new DeactivateRemoteExecutor());
 		ServerPacketHandler.getPacketHandler(PacketIds.ETHER).registerPacketHandler(
 				PacketRemoteCommands.remoteCommands.updateReceiver.toString(),
 				new RemoteChangeReceiverFreqExecutor());
@@ -119,12 +119,12 @@ public class WRemoteCommonProxy implements IRemoteCommonProxy {
 
 	@Override
 	public void activateRemote(World world, EntityLiving entityliving) {
-		WirelessRemoteDevice.activateWirelessRemote(world, entityliving);
+		//WirelessRemoteDevice.activateWirelessRemote(world, entityliving);
 	}
 
 	@Override
 	public boolean deactivateRemote(World world, EntityLiving entityliving) {
-		return WirelessRemoteDevice.deactivateWirelessRemote(world, entityliving);
+		return false;//WirelessRemoteDevice.deactivateWirelessRemote(world, entityliving);
 	}
 
 	@Override
@@ -134,10 +134,10 @@ public class WRemoteCommonProxy implements IRemoteCommonProxy {
 
 	@Override
 	public boolean isRemoteOn(World world, EntityPlayer entityplayer, String freq) {
-		if (WirelessRemoteDevice.remoteTransmitters.containsKey(entityplayer)) {
-			IWirelessDevice remote = WirelessRemoteDevice.remoteTransmitters.get(entityplayer);
-			return remote.getFreq().equals(freq);
-		}
+		//if (WirelessRemoteDevice.remoteTransmitters.containsKey(entityplayer)) {
+		//	IWirelessDevice remote = WirelessRemoteDevice.remoteTransmitters.get(entityplayer);
+		//	return remote.getFreq().equals(freq);
+		//}
 		return false;
 	}
 
