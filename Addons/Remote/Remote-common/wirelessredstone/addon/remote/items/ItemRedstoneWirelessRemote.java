@@ -14,6 +14,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 package wirelessredstone.addon.remote.items;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -138,14 +139,9 @@ public class ItemRedstoneWirelessRemote extends Item {
 	
 	@Override
     public Icon getIcon(ItemStack itemstack, int pass) {
-		return this.iconList[this.getState(itemstack) ? 1 : 0];
-	}
-
-	@Override
-	public Icon getIconFromDamage(int i) {
-		//if (!this.getState(i))
-			return iconList[0];
-		//return iconList[1];
+		boolean state = this.getState(itemstack);
+		//System.out.println(FMLCommonHandler.instance().getSide() + " | " + state);
+		return state ? this.iconList[1] : this.iconList[0];
 	}
 	
 	public boolean getState(ItemStack itemstack) {
@@ -165,11 +161,17 @@ public class ItemRedstoneWirelessRemote extends Item {
 	}
 	
 	public void setState(ItemStack itemstack, boolean state) {
+		System.out.println(FMLCommonHandler.instance().getSide() + " | " + itemstack.getTagCompound() + " | " + state);
 		NBTHelper.setBoolean(itemstack, NBTLib.DEVICE_STATE, state);
+		System.out.println(FMLCommonHandler.instance().getSide() + " | " + itemstack.getTagCompound() + " | "  + this.getState(itemstack));
 	}
 	
 	@Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
 		return EnumAction.none;
+	}
+
+	public Icon getRemoteIcon(ItemStack item) {
+		return this.getIcon(item, 0);
 	}
 }

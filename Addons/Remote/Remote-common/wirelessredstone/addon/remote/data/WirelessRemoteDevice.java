@@ -91,6 +91,7 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	@Override
 	public void activate(World world, Entity entity) {
 		if (entity instanceof EntityPlayer) {
+			new Exception().printStackTrace();
 			super.activate(world, entity);
 		}
 	}
@@ -98,6 +99,7 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	@Override
 	public void deactivate(World world, Entity entity, boolean isForced) {
 		if (entity instanceof EntityPlayer) {
+			new Exception().printStackTrace();
 			super.deactivate(world, entity, false);
 		}
 		if (!world.isRemote && isForced && remoteTransmitters.containsKey(entity)) {
@@ -125,7 +127,7 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	public static boolean deactivatePlayerWirelessRemote(World world, EntityLiving entityliving) {
 		if (entityliving instanceof EntityPlayer) {
 			if (remoteTransmitter != null) {
-				System.out.println("deactivatePlayerWirelessRemote");
+				//System.out.println("deactivatePlayerWirelessRemote");
 				WirelessRemoteDevice remote = remoteTransmitter;
 				remoteTransmitter = null;
 				PacketWirelessDevice packet = new PacketWirelessDevice(remote.getName());
@@ -238,12 +240,12 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 				}
 			}
 		}
-		System.out.println("remote.notBeingHeld");
+		//System.out.println("remote.notBeingHeld");
 		return false;
 	}
 
 	public static IWirelessDevice getRemoteDeviceForPlayer(EntityLiving entityliving) {
-		System.out.println("Retreiving Device");
+		//System.out.println("Retreiving Device");
 		return remoteTransmitters.containsKey(entityliving) ? remoteTransmitters.get(entityliving) : null;
 	}
 }

@@ -36,21 +36,21 @@ public class ClientTickHandler implements ITickHandler {
 	public static void processRemote(World world, EntityPlayer entityplayer,
 			GuiScreen gui, MovingObjectPosition mop) {
 		if (WirelessRemoteDevice.remoteTransmitter != null) {
-			System.out.println("Remote Transmitter != null");
+			//System.out.println("Remote Transmitter != null");
 			if (!mouseDown) {
 				//ThreadWirelessRemote.pulse(entityplayer, "hold");
-				System.out.println("Deactivating remote!!!!!!!!!");
+				//System.out.println("Deactivating remote!!!!!!!!!");
 				WirelessRemoteDevice.deactivatePlayerWirelessRemote(world, entityplayer);
 			}
 		}
 
 		if (mouseClicked()) {
-			System.out.println("Mouse Clicked");
+			//System.out.println("Mouse Clicked");
 			if (WirelessRemoteDevice.remoteTransmitter == null
 					&& entityplayer.getHeldItem() != null
 					&& entityplayer.getHeldItem().getItem() instanceof ItemRedstoneWirelessRemote
 					&& !entityplayer.isSneaking()) {
-				System.out.println("Activating remote!!!!!!!");
+				//System.out.println("Activating remote!!!!!!!");
 				WirelessRemoteDevice.activatePlayerWirelessRemote(world, entityplayer);
 			}
 		}

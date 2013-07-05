@@ -21,9 +21,11 @@ import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.src.ModLoader;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import wirelessredstone.addon.remote.client.network.packets.executors.ClientRemoteChangeFreqExecutor;
 import wirelessredstone.addon.remote.client.overrides.ActivateGuiRemoteOverride;
 import wirelessredstone.addon.remote.client.overrides.GuiRedstoneWirelessRemoteOverride;
+import wirelessredstone.addon.remote.client.presentation.ItemRedstoneWirelessRemoteRenderer;
 import wirelessredstone.addon.remote.client.presentation.gui.GuiRedstoneWirelessRemote;
 import wirelessredstone.addon.remote.client.tickhandler.ClientTickHandler;
 import wirelessredstone.addon.remote.core.WRemoteCore;
@@ -79,6 +81,7 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 	@Override
 	public void registerRenderInformation() {
 		loadBlockTextures();
+		MinecraftForgeClient.registerItemRenderer(WRemoteCore.itemRemote.itemID, new ItemRedstoneWirelessRemoteRenderer());
 	}
 
 	/**
