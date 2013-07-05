@@ -91,7 +91,6 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	@Override
 	public void activate(World world, Entity entity) {
 		if (entity instanceof EntityPlayer) {
-			new Exception().printStackTrace();
 			super.activate(world, entity);
 		}
 	}
@@ -99,7 +98,6 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
 	@Override
 	public void deactivate(World world, Entity entity, boolean isForced) {
 		if (entity instanceof EntityPlayer) {
-			new Exception().printStackTrace();
 			super.deactivate(world, entity, false);
 		}
 		if (!world.isRemote && isForced && remoteTransmitters.containsKey(entity)) {
