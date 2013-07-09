@@ -20,6 +20,7 @@ import java.util.List;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.resources.ResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -119,7 +120,7 @@ public abstract class GuiRedstoneWireless extends GuiScreen {
 	 * 
 	 * @return Background Image
 	 */
-	protected abstract String getBackgroundImage();
+	protected abstract ResourceLocation getBackgroundImage();
 
 	/**
 	 * Fetches the Gui Name to display at the top of the Gui
@@ -277,7 +278,8 @@ public abstract class GuiRedstoneWireless extends GuiScreen {
 	 */
 	protected void drawGuiContainerBackgroundLayer(int i, int j, float f) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(this.getBackgroundImage());
+		mc.renderEngine.func_110577_a(this.getBackgroundImage());
+		//.bindTexture(this.getBackgroundImage());
 		int sizeX = (width - xSize) / 2;
 		int sizeY = (height - ySize) / 2;
 		drawTexturedModalRect(sizeX, sizeY, 0, 0, xSize, ySize);
@@ -294,7 +296,7 @@ public abstract class GuiRedstoneWireless extends GuiScreen {
 	 *            tick partial
 	 */
 	private void drawTooltips(int i, int j, float f) {
-		this.mc.renderEngine.resetBoundTexture();
+		this.mc.renderEngine.func_110550_d();//.resetBoundTexture();
 		for (Object button : this.buttonList) {
 			if (button instanceof GuiButtonWireless) {
 				GuiButtonWireless guibutton = (GuiButtonWireless) button;

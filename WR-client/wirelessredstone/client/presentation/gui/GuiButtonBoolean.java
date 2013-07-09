@@ -85,11 +85,12 @@ public class GuiButtonBoolean extends GuiButtonWireless {
 	public void drawButton(Minecraft mc, int i, int j) {
 		if (this.drawButton) {
 			FontRenderer fontrenderer = mc.fontRenderer;
-			if (state) {
-				mc.renderEngine.bindTexture(this.getButtonTexture(state));
-			} else {
-				mc.renderEngine.bindTexture(this.getButtonTexture(state));
-			}
+			//if (state) {
+				mc.renderEngine.func_110577_a(this.getButtonTexture(state));
+				//mc.renderEngine.bindTexture();
+			//} else {
+				//mc.renderEngine.bindTexture();
+			//}
 	
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.field_82253_i = inBounds(i, j);// >= xPosition && j >= yPosition && i <
