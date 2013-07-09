@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 import wirelessredstone.core.lib.GuiLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * A GUI Button<br>

@@ -425,8 +425,8 @@ public abstract class TileEntityRedstoneWireless extends TileEntity implements I
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		// TODO :: Auto-generated method stub
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 }

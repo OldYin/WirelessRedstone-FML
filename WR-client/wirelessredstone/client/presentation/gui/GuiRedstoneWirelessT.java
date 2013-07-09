@@ -14,7 +14,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 package wirelessredstone.client.presentation.gui;
 
-import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 import wirelessredstone.core.lib.GuiLib;
 
 /**

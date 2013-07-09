@@ -1,6 +1,6 @@
 package wirelessredstone.core.lib;
 
-import net.minecraft.client.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiLib {
 
