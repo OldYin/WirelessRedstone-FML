@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import wirelessredstone.core.WRCore;
 import wirelessredstone.core.lib.IconLib;
 import wirelessredstone.ether.RedstoneEther;
@@ -146,6 +147,9 @@ public class BlockRedstoneWirelessT extends BlockRedstoneWireless {
 	 */
 	@Override
 	protected boolean onBlockRedstoneWirelessActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+		if (entityplayer.isSneaking() && entityplayer.getHeldItem() != null) {
+			return false;
+		}
 		TileEntity tileentity = world.getBlockTileEntity(i, j, k);
 
 		if (tileentity != null && tileentity instanceof TileEntityRedstoneWirelessT)
@@ -224,4 +228,8 @@ public class BlockRedstoneWirelessT extends BlockRedstoneWireless {
 	protected int isRedstoneWirelessIndirectlyPoweringTo(World world, int i, int j, int k, int l) {
 		return 0;
 	}
+	
+    public boolean isBlockNormalCube(World world, int x, int y, int z) {
+    	return true;
+    }
 }
