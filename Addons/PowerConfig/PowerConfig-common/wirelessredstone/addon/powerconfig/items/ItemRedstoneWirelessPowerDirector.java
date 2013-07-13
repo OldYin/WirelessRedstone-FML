@@ -17,6 +17,7 @@ package wirelessredstone.addon.powerconfig.items;
 import wirelessredstone.addon.powerconfig.core.PowerConfigurator;
 import wirelessredstone.addon.powerconfig.core.lib.IconLib;
 import wirelessredstone.core.lib.GuiLib;
+import wirelessredstone.tileentity.TileEntityRedstoneWirelessR;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,14 +46,13 @@ public class ItemRedstoneWirelessPowerDirector extends Item {
 
 	@Override
 	// ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer,
+	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer,
 			World world, int i, int j, int k, int l,
 			float a, float b, float c) {
 		TileEntity tileentity = world.getBlockTileEntity(i, j, k);
 
-		if (tileentity != null) {
-			entityplayer.openGui(PowerConfigurator.instance, GuiLib.GUIID_DEVICE, world, i, j, k);//PowerConfigurator.openGUI(world, entityplayer, tileentity);
-			// TODO :: Open GUI
+		if (tileentity != null && tileentity instanceof TileEntityRedstoneWirelessR) {
+			entityplayer.openGui(PowerConfigurator.instance, GuiLib.GUIID_DEVICE, world, i, j, k);
 			itemstack.damageItem(1, entityplayer);
 			return true;
 		}
