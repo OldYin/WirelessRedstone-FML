@@ -20,6 +20,7 @@ import java.util.List;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.util.ResourceLocation;
 
 import wirelessredstone.addon.powerconfig.network.packets.PacketPowerConfigCommands;
 import wirelessredstone.addon.powerconfig.network.packets.PacketPowerConfigSettings;
@@ -46,7 +47,7 @@ public class GuiRedstoneWirelessPowerDirector extends
 	}
 
 	@Override
-	public String getBackgroundImage() {
+	public ResourceLocation getBackgroundImage() {
 		return GuiLib.GUI_MEDIUM;
 	}
 
@@ -140,7 +141,8 @@ public class GuiRedstoneWirelessPowerDirector extends
 				notifyServer(PacketPowerConfigCommands.powerConfigCommands.setDirection.toString(), dir);
 				inventory.flipPowerDirection(dir);
 				initGui();
-			} else if (indir >= 0) {
+			}
+			if (indir >= 0) {
 				notifyServer(PacketPowerConfigCommands.powerConfigCommands.setInDirection.toString(), indir);
 				inventory.flipIndirectPower(indir);
 				initGui();
