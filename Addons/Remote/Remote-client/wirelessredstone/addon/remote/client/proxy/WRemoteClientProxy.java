@@ -13,7 +13,7 @@ package wirelessredstone.addon.remote.client.proxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.NetClientHandler;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.NetHandler;
@@ -21,7 +21,6 @@ import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.src.ModLoader;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import wirelessredstone.addon.remote.client.network.packets.executors.ClientRemoteChangeFreqExecutor;
 import wirelessredstone.addon.remote.client.network.packets.executors.ClientRemoteOpenGui;
 import wirelessredstone.addon.remote.client.overrides.ActivateGuiRemoteOverride;
@@ -101,7 +100,7 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 
 	@Override
 	public String getMinecraftDir() {
-		return Minecraft.getMinecraftDir().toString();
+		return Minecraft.getMinecraft().mcDataDir.getPath();
 	}
 
 	@Override
@@ -178,14 +177,14 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 	}
 
 	@Override
-	public void activateRemote(World world, EntityLiving entityliving) {
+	public void activateRemote(World world, EntityLivingBase entityliving) {
 		if (!world.isRemote) {
 			super.activateRemote(world, entityliving);
 		}
 	}
 
 	@Override
-	public boolean deactivateRemote(World world, EntityLiving entityliving) {
+	public boolean deactivateRemote(World world, EntityLivingBase entityliving) {
 		if (!world.isRemote) {
 			return super.deactivateRemote(world, entityliving);
 		}

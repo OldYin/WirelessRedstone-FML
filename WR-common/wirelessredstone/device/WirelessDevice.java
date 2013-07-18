@@ -12,7 +12,7 @@
 package wirelessredstone.device;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -30,9 +30,9 @@ public abstract class WirelessDevice implements IWirelessDevice {
 	
 	protected IWirelessDeviceData data;
 	protected int xCoord, yCoord, zCoord;
-	protected EntityLiving owner;
+	protected EntityLivingBase owner;
 	
-	protected WirelessDevice(World world, EntityLiving entity, IWirelessDeviceData data) {
+	protected WirelessDevice(World world, EntityLivingBase entity, IWirelessDeviceData data) {
 		if (data != null) {
 			this.data = data;
 		} else {
@@ -46,12 +46,12 @@ public abstract class WirelessDevice implements IWirelessDevice {
 	public abstract String getName();
 
 	@Override
-	public EntityLiving getOwner() {
+	public EntityLivingBase getOwner() {
 		return this.owner;
 	}
 	
 	@Override
-	public void setOwner(EntityLiving entity) {
+	public void setOwner(EntityLivingBase entity) {
 		this.owner = entity;
 	}
 
@@ -125,7 +125,7 @@ public abstract class WirelessDevice implements IWirelessDevice {
 	
 	@Override
 	public boolean isBeingHeld() {
-		EntityLiving entityliving = this.getOwner();
+		EntityLivingBase entityliving = this.getOwner();
 		if (entityliving != null) {
 			ItemStack itemstack = entityliving.getHeldItem();
 			if (itemstack != null) {

@@ -14,7 +14,7 @@ package wirelessredstone.addon.remote.proxy;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
@@ -133,12 +133,12 @@ public class WRemoteCommonProxy implements IRemoteCommonProxy {
 	}
 
 	@Override
-	public void activateRemote(World world, EntityLiving entityliving) {
+	public void activateRemote(World world, EntityLivingBase entityliving) {
 		WirelessRemoteDevice.activateWirelessRemote(world, entityliving);
 	}
 
 	@Override
-	public boolean deactivateRemote(World world, EntityLiving entityliving) {
+	public boolean deactivateRemote(World world, EntityLivingBase entityliving) {
 		return WirelessRemoteDevice.deactivateWirelessRemote(world, entityliving);
 	}
 

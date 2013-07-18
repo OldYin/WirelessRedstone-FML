@@ -23,7 +23,6 @@ import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.src.ModLoader;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import wirelessredstone.api.IActivateGuiOverride;
 import wirelessredstone.api.IGuiRedstoneWirelessOverride;
 import wirelessredstone.api.IWirelessDeviceData;

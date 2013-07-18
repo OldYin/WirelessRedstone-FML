@@ -13,6 +13,7 @@ package wirelessredstone.api;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 import wirelessredstone.data.WirelessCoordinates;
 import wirelessredstone.network.packets.PacketWirelessDevice;
@@ -30,14 +31,14 @@ public interface IWirelessDevice {
 	 * 
 	 * @param a living entity
 	 */
-	void setOwner(EntityLiving entity);
+	void setOwner(EntityLivingBase entity);
 	
 	/**
 	 * Get the owner of the device instance
 	 * 
 	 * @return a living entity
 	 */
-	EntityLiving getOwner();
+	EntityLivingBase getOwner();
 
 	/**
 	 * Set the frequency of the wireless device.

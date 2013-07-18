@@ -11,7 +11,7 @@
  */
 package wirelessredstone.device;
 
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 import wirelessredstone.api.IWirelessDeviceData;
 import wirelessredstone.ether.RedstoneEther;
@@ -20,8 +20,8 @@ import wirelessredstone.network.packets.PacketWirelessDevice;
 
 public abstract class WirelessTransmitterDevice extends WirelessDevice {
 	
-	public WirelessTransmitterDevice(World world, EntityLiving entityliving, IWirelessDeviceData deviceData) {
-		super(world, entityliving, deviceData);
+	public WirelessTransmitterDevice(World world, EntityLivingBase entity, IWirelessDeviceData deviceData) {
+		super(world, entity, deviceData);
 	}
 	
 	@Override
